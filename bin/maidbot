@@ -1,0 +1,59 @@
+#!/usr/bin/env node
+
+/**
+ * This file is part of maidbot.
+ * Copyright (c) 2013 vomitcuddle <shinku@dollbooru.org>
+ * License: ISC.
+ */
+
+// Dependencies.
+var fs = require('fs'),
+    JSONStream = require('JSONStream');
+
+// Command line parser.
+var argv = require('optimist')
+  .usage("I'm here to serve you...\nUsage: $0 [config-file.json]")
+  .boolean("config-check")
+  .describe("config-check", 'Validates config file and quits immediately.')
+  .demand(1).argv;
+
+// Check configuration file exists and is valid json.
+var loadConfiguration = function (path, callback) {
+  fs.exists(path, function (exists) {
+    if (!exists) {
+      callback("DOES_NOT_EXIST");
+    } else {
+      // Create JSON stream parser.
+      var jsonStream = JSONStream.parse([true]);
+      // Done parsing callback.
+      jsonStream.on('root', function (root, count) {
+        if (count === 0) {
+          // Configuration is empty.
+          callback("JSON_READ_ERROR");
+        } else {
+          callback(null, root);
+        }
+      });
+      // Error callback.
+      jsonStream.on('error', function(err) {
+        callback("JSON_READ_ERROR");
+      });
+      // Create read stream.
+      fs.createReadStream(path).pipe(jsonStream);
+    }
+  });
+};
+
+// Load configuration.
+loadConfiguration(argv._[0], function (error, config) {
+  if (error === 'DOES_NOT_EXIST') {
+    console.error('Configuration file does not exist.');
+    process.exit(1);
+  } else if (error === 'JSON_READ_ERROR') {
+    console.error('Error reading configuration file.');
+    process.exit(1);
+  } else if (!error && argv["config-check"]) {
+    console.log(config);
+    process.exit(0);
+  }
+});

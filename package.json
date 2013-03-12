@@ -17,7 +17,10 @@
     "twitter",
     "bot"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "JSONStream": "0.4.x",
+    "optimist": "0.3.x"
+  },
   "devDependencies": {
     "mocha": "1.8.x"
   },
