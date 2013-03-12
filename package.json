@@ -10,6 +10,9 @@
     "type": "git",
     "url": "https://github.com/vomitcuddle/maidbot.git"
   },
+  "scripts": {
+    "test": "mocha -R list"
+  },
   "keywords": [
     "twitter",
     "bot"
