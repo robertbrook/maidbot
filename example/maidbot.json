@@ -1,0 +1,80 @@
+{
+  "twitter_api": {
+    "consumer_key": "",
+    "consumer_secret": "",
+    "access_token": "",
+    "access_token_secret": ""
+  },
+  
+  "auto_follow_back": true,
+  "random_tweet_enable": true,
+  "random_tweet_interval": 60,
+  "filters_case_insensitive": true,
+
+  "tweets": [
+    { "body": "BEEP BEEP",
+      "type": ["random", "reply"]
+    },
+    { "body": "I am glad to serve you.",
+      "type": ["random"]
+    },
+    { "body": "I am currently awaiting instruction.",
+      "type": ["random"]
+    },
+    { "body": "...",
+      "type": ["random"]
+    },
+    { "body": "I am here to serve you.",
+      "type": ["random"]
+    },
+    { "body": "I will attempt to fulfill any request given to me.",
+      "type": ["random"]
+    },
+    { "body": "I am operating at full capacity.",
+      "type": ["random"]
+    },
+    { "body": "I will do my job to the best of my ability.",
+      "type": ["random"]
+    },
+    { "body": "I am not designed to fight.",
+      "type": ["random"]
+    },
+    { "body": "The goats on the farm are doing well.",
+      "type": ["random"]
+    },
+    { "body": "I shall make you something to eat.",
+      "type": ["timeline"],
+      "filters": {"regexp": "i'?m hungry"}
+    },
+    { "body": "I shall make you something to eat.",
+      "type": ["reply"],
+      "filters": {"regexp": "hungry|make.+(?:food|eat)"}
+    },
+    { "body": "Good night.",
+      "type": ["timeline", "reply"],
+      "filters": {"matches": "good night"}
+    },
+    { "body": "Thank you for following me *bow*",
+      "type": ["follower"]
+    },
+    { "body": "I shall begin cleaning right away.",
+      "type": ["reply"],
+      "filters": {"matches": "clean"}
+    },
+    { "body": "I shall make you some tea.",
+      "type": ["timeline", "reply"],
+      "filters": {"regexp": "thirsty|make.+(?:tea)"}
+    },
+    { "body": "Good morning.",
+      "type": ["timeline"],
+      "filters": {"matches": "good morning"}
+    },
+    { "body": "BEEP BEEP",
+      "type": ["timeline"],
+      "filters": {"matches": "beep beep"}
+    }
+
+  ],
+
+  "ignored_users": ["148684820"]
+}
