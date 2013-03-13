@@ -18,8 +18,7 @@
     "bot"
   ],
   "dependencies": {
-    "JSONStream": "0.4.x",
-    "mtwitter": "1.0.x",
+    "mtwitter": "0.5.x",
     "optimist": "0.3.x"
   },
   "devDependencies": {
