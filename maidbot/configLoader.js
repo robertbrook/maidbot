@@ -5,7 +5,9 @@
  */
 
 // Dependencies.
-var fs = require('fs');
+var fs = require('fs'),
+    jsonSchema = require('json-schema'),
+    configSchema = require('./configSchema.js');
 
 // Loads configuration and parses it asynchronously.
 var configLoader = function (path, callback) {
@@ -20,7 +22,14 @@ var configLoader = function (path, callback) {
           callback(new Error("Could not read configuration file."));
         } else {
           try {
-            callback(null, JSON.parse(data));
+            data = JSON.parse(data);
+            var validation = jsonSchema.validate(data, configSchema);
+            if (validation.valid) {
+              callback(null, data);
+            } else {
+              console.log(validation.errors);
+              callback(new Error("Configuration file is not valid."));
+            }
           } catch (err) {
             callback(new Error("Error parsing configuration file: " + err.message));
           }
