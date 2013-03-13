@@ -6,6 +6,9 @@
   "description": "a simple, configurable twitter bot inspired by @MAID001",
   "contributors": [],
   "main": "./maidbot",
+  "bin": {
+    "maidbot": "./bin/maidbot"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/vomitcuddle/maidbot.git"
