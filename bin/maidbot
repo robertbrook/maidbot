@@ -8,11 +8,12 @@
 
 // Dependencies.
 var fs = require('fs'),
-    JSONStream = require('JSONStream');
+    JSONStream = require('JSONStream'),
+    version = require('../package.json').version;
 
 // Command line parser.
 var argv = require('optimist')
-  .usage("I'm here to serve you...\nUsage: $0 [config-file.json]")
+  .usage("maidbot " + version + "\nI'm here to serve you...\n\nUsage: $0 [config-file.json]")
   .boolean("config-check")
   .describe("config-check", 'Validates config file and quits immediately.')
   .demand(1).argv;
@@ -46,6 +47,7 @@ var loadConfiguration = function (path, callback) {
 
 // Load configuration.
 loadConfiguration(argv._[0], function (error, config) {
+  // Handle configuration errors.
   if (error === 'DOES_NOT_EXIST') {
     console.error('Configuration file does not exist.');
     process.exit(1);
@@ -55,5 +57,9 @@ loadConfiguration(argv._[0], function (error, config) {
   } else if (!error && argv["config-check"]) {
     console.log(config);
     process.exit(0);
+  } else if (error) {
+    process.exit(1);
   }
+  // Output version.
+  console.log("\u001b[36mmaidbot\u001b[0;1m " + version + "\u001b[0m");
 });
