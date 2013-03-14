@@ -7,7 +7,7 @@
 // Dependencies.
 var fs = require('fs'),
     jsonSchema = require('json-schema'),
-    configSchema = require('./configSchema.js');
+    schema = require('./schema.js');
 
 // Loads configuration and parses it asynchronously.
 var configLoader = function (path, callback) {
@@ -23,7 +23,7 @@ var configLoader = function (path, callback) {
         } else {
           try {
             data = JSON.parse(data);
-            var validation = jsonSchema.validate(data, configSchema);
+            var validation = jsonSchema.validate(data, schema);
             if (validation.valid) {
               callback(null, data);
             } else {

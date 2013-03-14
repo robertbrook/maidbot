@@ -6,7 +6,7 @@
 
 var assert = require('assert'),
     jsonSchema = require('json-schema'),
-    mySchema = require('../maidbot/configSchema.js');
+    configSchema = require('../maidbot/config/schema.js');
 
 describe("Configuration JSON schema", function () {
   var configuration;
@@ -29,41 +29,41 @@ describe("Configuration JSON schema", function () {
   });
 
   it("should validate as JSON schema draft 4", function () {
-    assert(jsonSchema.validate(mySchema).valid, "validation failed");
+    assert(jsonSchema.validate(configSchema).valid, "validation failed");
   });
 
   it("validates configuration", function () {
-    assert(jsonSchema.validate(configuration, mySchema).valid, "validation failed" );
+    assert(jsonSchema.validate(configuration, configSchema).valid, "validation failed" );
   });
 
   describe("sets default", function () {
     it("auto_follow_back", function () {
-      var validation = jsonSchema.validate(configuration, mySchema);
+      var validation = jsonSchema.validate(configuration, configSchema);
       assert.strictEqual(configuration.auto_follow_back, true);
     });
 
     it("random_tweet_enable", function () {
-      var validation = jsonSchema.validate(configuration, mySchema);
+      var validation = jsonSchema.validate(configuration, configSchema);
       assert.strictEqual(configuration.random_tweet_enable, true);
     });
 
     it("random_tweet_interval", function () {
-      var validation = jsonSchema.validate(configuration, mySchema);
+      var validation = jsonSchema.validate(configuration, configSchema);
       assert.strictEqual(configuration.random_tweet_interval, 60);
     });
 
     it("filters_case_insensitive", function () {
-      var validation = jsonSchema.validate(configuration, mySchema);
+      var validation = jsonSchema.validate(configuration, configSchema);
       assert.strictEqual(configuration.filters_case_insensitive, true);
     });
 
     it("ignored_users", function () {
-      var validation = jsonSchema.validate(configuration, mySchema);
+      var validation = jsonSchema.validate(configuration, configSchema);
       assert.deepEqual(configuration.ignored_users, []);
     });
 
     it("tweets.items.properties", function () {
-      var validation = jsonSchema.validate(configuration, mySchema);
+      var validation = jsonSchema.validate(configuration, configSchema);
       assert.deepEqual(configuration.tweets[0].filters, {}, ".filters should default to an empty object");
       assert.strictEqual(configuration.tweets[0].weight, 1, ".weight should default to 1");
     });
@@ -75,7 +75,7 @@ describe("Configuration JSON schema", function () {
       // Setup 
       delete configuration.twitter_api;
       // Validation
-      validation = jsonSchema.validate(configuration, mySchema);
+      validation = jsonSchema.validate(configuration, configSchema);
       // Asserts
       assert(validation.valid === false, "should not validate");
       assert.strictEqual(validation.errors.length, 1, "unexpected errors");
@@ -93,7 +93,7 @@ describe("Configuration JSON schema", function () {
       delete configuration.twitter_api.access_token;
       delete configuration.twitter_api.access_token_secret;
       // Validation
-      validation = jsonSchema.validate(configuration, mySchema);
+      validation = jsonSchema.validate(configuration, configSchema);
       // Asserts
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 4, "unexpected errors");
@@ -114,7 +114,7 @@ describe("Configuration JSON schema", function () {
       // Setup.
       delete configuration.tweets;
       // Validation.
-      validation = jsonSchema.validate(configuration, mySchema);
+      validation = jsonSchema.validate(configuration, configSchema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 1, "unexpected errors");
@@ -129,7 +129,7 @@ describe("Configuration JSON schema", function () {
       // Setup.
       configuration.tweets.pop();
       // Validation.
-      validation = jsonSchema.validate(configuration, mySchema);
+      validation = jsonSchema.validate(configuration, configSchema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 1, "unexpected errors");
@@ -144,7 +144,7 @@ describe("Configuration JSON schema", function () {
       // Setup.
       configuration.tweets[0].type = [];
       // Validation.
-      validation = jsonSchema.validate(configuration, mySchema);
+      validation = jsonSchema.validate(configuration, configSchema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.deepEqual(validation.errors, [
@@ -159,7 +159,7 @@ describe("Configuration JSON schema", function () {
       delete configuration.tweets[0].body;
       delete configuration.tweets[0].type;
       // Validation.
-      validation = jsonSchema.validate(configuration, mySchema);
+      validation = jsonSchema.validate(configuration, configSchema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 2, "unexpected errors");
@@ -178,7 +178,7 @@ describe("Configuration JSON schema", function () {
       // Setup.
       configuration.auto_follow_back = 1;
       // Validation.
-      validation = jsonSchema.validate(configuration, mySchema);
+      validation = jsonSchema.validate(configuration, configSchema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 1, "unexpected errors");
@@ -193,7 +193,7 @@ describe("Configuration JSON schema", function () {
       // Setup.
       configuration.random_tweet_enable = 1;
       // Validation.
-      validation = jsonSchema.validate(configuration, mySchema);
+      validation = jsonSchema.validate(configuration, configSchema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 1, "unexpected errors");
@@ -208,7 +208,7 @@ describe("Configuration JSON schema", function () {
       // Setup.
       configuration.random_tweet_interval = 50.1; 
       // Validation.
-      validation = jsonSchema.validate(configuration, mySchema);
+      validation = jsonSchema.validate(configuration, configSchema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 1, "unexpected errors");
@@ -223,7 +223,7 @@ describe("Configuration JSON schema", function () {
       // Setup.
       configuration.filters_case_insensitive = 1;
       // Validation.
-      validation = jsonSchema.validate(configuration, mySchema);
+      validation = jsonSchema.validate(configuration, configSchema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 1, "unexpected errors");
@@ -238,7 +238,7 @@ describe("Configuration JSON schema", function () {
       // Setup.
       configuration.ignored_users = 1;
       // Validation.
-      validation = jsonSchema.validate(configuration, mySchema);
+      validation = jsonSchema.validate(configuration, configSchema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 1, "unexpected errors");
@@ -256,7 +256,7 @@ describe("Configuration JSON schema", function () {
       configuration.twitter_api.access_token = 32.2;
       configuration.twitter_api.access_token_secret = [];
       // Validation.
-      validation = jsonSchema.validate(configuration, mySchema);
+      validation = jsonSchema.validate(configuration, configSchema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 4, "unexpected errors");
@@ -280,7 +280,7 @@ describe("Configuration JSON schema", function () {
       configuration.tweets[0].filters = 500;
       configuration.tweets[0].weight = 2.32;
       // Validation.
-      validation = jsonSchema.validate(configuration, mySchema);
+      validation = jsonSchema.validate(configuration, configSchema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 5, "unexpected errors");
@@ -307,7 +307,7 @@ describe("Configuration JSON schema", function () {
         "random": 32.3 
       };
       // Validation.
-      validation = jsonSchema.validate(configuration, mySchema);
+      validation = jsonSchema.validate(configuration, configSchema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 3, "unexpected errors");
@@ -328,7 +328,7 @@ describe("Configuration JSON schema", function () {
       // Setup.
       configuration.random_tweet_interval = 4;
       // Validation.
-      validation = jsonSchema.validate(configuration, mySchema);
+      validation = jsonSchema.validate(configuration, configSchema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 1, "unexpected errors");
@@ -344,7 +344,7 @@ describe("Configuration JSON schema", function () {
       // Setup.
       configuration.ignored_users = ["sfdf213ascv#@@!"];
       // Validation.
-      validation = jsonSchema.validate(configuration, mySchema);
+      validation = jsonSchema.validate(configuration, configSchema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 1, "unexpected errors");
@@ -360,7 +360,7 @@ describe("Configuration JSON schema", function () {
       // Setup.
       configuration.tweets[0].weight = -1;
       // Validation.
-      validation = jsonSchema.validate(configuration, mySchema);
+      validation = jsonSchema.validate(configuration, configSchema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 1, "unexpected errors");

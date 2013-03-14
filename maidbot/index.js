@@ -5,7 +5,7 @@
  */
 
 // Dependencies.
-var configLoader = require('./configLoader.js');
+var configLoader = require('./config/loader.js');
 
 module.exports = function (options) {
   var configFile = options._[0];

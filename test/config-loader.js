@@ -5,7 +5,7 @@
  */
 
 var assert = require('assert'),
-    configLoader = require('../maidbot/configLoader.js');
+    configLoader = require('../maidbot/config/loader.js');
 
 describe('configLoader.js', function () {
   it('returns an error when file does not exist', function (done) { 
