@@ -10,6 +10,7 @@ var twitter_api_schema = {
   "title": "Twitter API Settings",
   "description": "Twitter API Settings",
   "type": "object",
+  "required": true,
   "properties": {
     "consumer_key": {
       "description": "Consumer key",
@@ -39,7 +40,6 @@ var tweet_schema = {
   "title": "Tweet",
   "description": "A maidbot tweet",
   "type": "object",
-  "required": true,
   "properties": {
     "body": {
       "description": "The content of the tweet",
