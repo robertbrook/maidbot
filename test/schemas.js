@@ -28,12 +28,12 @@ describe("Configuration JSON schema", function () {
     };
   });
 
-  it("should validate as JSON schema draft 4", function () {
+  it("validates as JSON schema draft 4", function () {
     assert(jsonSchema.validate(configSchema).valid, "validation failed");
   });
 
-  it("validates configuration", function () {
-    assert(jsonSchema.validate(configuration, configSchema).valid, "validation failed" );
+  it("validates example configuration", function () {
+    assert(jsonSchema.validate(configuration, configSchema).valid, "validation failed");
   });
 
   describe("sets default", function () {
