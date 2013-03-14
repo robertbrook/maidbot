@@ -39,6 +39,7 @@ var tweet_schema = {
   "title": "Tweet",
   "description": "A maidbot tweet",
   "type": "object",
+  "required": true,
   "properties": {
     "body": {
       "description": "The content of the tweet",
@@ -108,6 +109,7 @@ module.exports = {
       "description": "Array of Tweets",
       "type": "array",
       "minItems": 1,
+      "required": true,
       "items": tweet_schema
     },
     "ignored_users": {
@@ -119,6 +121,5 @@ module.exports = {
         "pattern": "^[0-9]+$"
       }
     }
-  },
-  "required": ["twitter_api", "tweets"]
+  }
 };

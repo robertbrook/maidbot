@@ -14,9 +14,10 @@ module.exports = function (options) {
     if (error) {
       // Print error to console.
       console.error(error.message);
+      process.exit(1);
     } else if (options['config-check']) {
-      // Print parsed JSON to console.
-      console.log(config);
+      console.log("Configuration syntax is correct.");
+      process.exit(0);
     } else {
       // Continue.
     }

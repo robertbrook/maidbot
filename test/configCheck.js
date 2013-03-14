@@ -30,10 +30,10 @@ describe('configLoader.js', function () {
     });
   });
   it('returns configuration as a parsed object', function (done) {
-    configLoader('test/config/valid.json', function (error, config) {
+    configLoader('example/maidbot.json', function (error, config) {
       assert(error === null);
       assert(typeof config === 'object');
-      assert(config['this is'] === 'valid json');
+      JSON.stringify(config);
       done();
     });
   });
