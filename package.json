@@ -14,7 +14,7 @@
     "url": "https://github.com/vomitcuddle/maidbot.git"
   },
   "scripts": {
-    "test": "mocha -R list"
+    "test": "mocha"
   },
   "keywords": [
     "twitter",
