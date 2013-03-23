@@ -304,20 +304,23 @@ describe("Configuration JSON schema", function () {
       configuration.tweets[0].filters = {
         "regexp": 23,
         "matches": [],
-        "random": 32.3 
+        "random": 32.3,
+        "userid": "thisisastringandnotanumber"
       };
       // Validation.
       validation = jsonSchema.validate(configuration, configSchema);
       // Asserts.
       assert(!validation.valid, "should not validate");
-      assert.strictEqual(validation.errors.length, 3, "unexpected errors");
+      assert.strictEqual(validation.errors.length, 4, "unexpected errors");
       assert.deepEqual(validation.errors, [
         { "property": "tweets[0].filters.regexp",
           "message": "number value found, but a string is required" },
         { "property": "tweets[0].filters.matches",
           "message": "object value found, but a string is required" },
         { "property": "tweets[0].filters.random",
-          "message": "number value found, but a integer is required" }
+          "message": "number value found, but a integer is required" },
+        { "property": "tweets[0].filters.userid",
+          "message": "string value found, but a integer is required" }
       ]);
     });
   });

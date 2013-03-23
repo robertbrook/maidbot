@@ -63,7 +63,8 @@ var tweet_schema = {
       "properties": {
         "regexp": {"type": "string"},
         "matches": {"type": "string"},
-        "random": {"type": "integer"}
+        "random": {"type": "integer"},
+        "userid": {"type": "integer"}
       }
     },
     "weight": {
