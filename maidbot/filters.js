@@ -16,11 +16,17 @@ module.exports = function (caseSensitive) {
         mPattern = new RegExp(pattern, "i");
       }
 
-      return function (tweet) {
+      return function (tweet, callback) {
         var matches = mPattern.exec(tweet.text);
         if (matches) {
+          if (callback) {
+            callback(true, tweet);
+          }
           return true;
         } else {
+          if (callback) {
+            callback(false, tweet);
+          }
           return false;
         }
       };
@@ -28,7 +34,7 @@ module.exports = function (caseSensitive) {
     
     // Returns true if tweet contains a substring.
     matches: function (substring) {
-      return function (tweet) {
+      return function (tweet, callback) {
         var match;
         
         // Case sensitivity.
@@ -39,8 +45,14 @@ module.exports = function (caseSensitive) {
         }
 
         if (match !== -1) {
+          if (callback) {
+            callback(true, tweet);
+          }
           return true;
         } else {
+          if (callback) {
+            callback(false, tweet);
+          }
           return false;
         }
       };
@@ -48,12 +60,18 @@ module.exports = function (caseSensitive) {
     
     // Returns a value based on a biased dice roll.
     random: function (weight) {
-      return function () {
+      return function (tweet, callback) {
         var random = Math.ceil(Math.random()*100);
 
         if (weight > random) {
+          if (callback) {
+            callback(true, tweet);
+          }
           return true;
         } else {
+          if (callback) {
+            callback(false, tweet);
+          }
           return false;
         }
       };
@@ -61,10 +79,16 @@ module.exports = function (caseSensitive) {
     
     // Return true if the person who made the tweet matches a given userid.
     userid: function (userid) {
-      return function (tweet) {
+      return function (tweet, callback) {
         if (tweet.user.id === userid) {
+          if (callback) {
+            callback(true, tweet);
+          }
           return true;
         } else {
+          if (callback) {
+            callback(false, tweet);
+          }
           return false;
         }
       };

@@ -32,6 +32,16 @@ describe("Filters", function () {
       filter = filterFactory.regexp("^some text$");
       assert(filter(mockTweet), "should be case-insensitive");
     });
+
+    it("callback style", function(done) {
+      var filter = filterFactory.regexp("^soMe text$");
+      filter(mockTweet, function (shouldTweet, newTweet) {
+        assert(shouldTweet);
+        assert.deepEqual(newTweet, mockTweet, "shouldn't transform tweet objects in any way");
+        done();
+      });
+    });
+
   });
 
   describe("matches", function () {
@@ -47,6 +57,16 @@ describe("Filters", function () {
       filter = filterFactory.matches("some text");
       assert(filter(mockTweet), "should be case-insensitive");
     });
+
+    it("callback style", function(done) {
+      var filter = filterFactory.matches("soMe text");
+      filter(mockTweet, function (shouldTweet, newTweet) {
+        assert(shouldTweet);
+        assert.deepEqual(newTweet, mockTweet, "shouldn't transform tweet objects in any way");
+        done();
+      });
+    });
+
   });
 
   describe("random", function () {
@@ -60,6 +80,15 @@ describe("Filters", function () {
       var filter = filterFactory.random(0);
       assert(!filter(mockTweet), "should never match");
     });
+
+    it("callback style", function(done) {
+      var filter = filterFactory.random(50);
+      filter(mockTweet, function (shouldTweet, newTweet) {
+        assert.deepEqual(newTweet, mockTweet, "shouldn't transform tweet objects in any way");
+        done();
+      });
+    });
+
   });
 
   describe("userid", function () {
@@ -71,6 +100,14 @@ describe("Filters", function () {
       assert(!filter(mockTweet), "shouldn't match example");
     });
 
-  });
+    it("callback style", function(done) {
+      var filter = filterFactory.userid(12345678);
+      filter(mockTweet, function (shouldTweet, newTweet) {
+        assert(shouldTweet);
+        assert.deepEqual(newTweet, mockTweet, "shouldn't transform tweet objects in any way");
+        done();
+      });
+    });
 
+  });
 });
