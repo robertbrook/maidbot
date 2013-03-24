@@ -3,23 +3,47 @@
  * Copyright (c) 2013 vomitcuddle <shinku@dollbooru.org>
  * License: ISC
  */
+var configLoader = require("./config/loader.js");
 
-// Dependencies.
-var configLoader = require('./config/loader.js');
+module.exports = (function () { 
+  /** Private fields. */
+  var mConfig; 
 
-module.exports = function (options) {
-  var configFile = options._[0];
-  // Load configuration.
-  configLoader(configFile, function (error, config) {
-    if (error) {
-      // Print error to console.
-      console.error(error.message);
-      process.exit(1);
-    } else if (options['config-check']) {
-      console.log("Configuration syntax is correct.");
-      process.exit(0);
-    } else {
-      // Continue.
+  /** Private Methods */
+  
+  // Config loader.
+  var loadConfig = function (configFile, callback) {
+    configLoader(configFile, function (error, config) {
+      if (error) {
+        console.error(error.message);
+        callback(error, null);
+      } else {
+        callback(null, config);
+      }
+    });
+  };
+
+  return {
+    init: function (configFile) {
+      // Load configuration.
+      loadConfig(configFile, function (error, config) {
+        if (error) {
+          throw error;
+        } else {
+          mConfig = config;
+        }
+      });
+    },
+
+    testConfig: function (configFile, callback) {
+      loadConfig(configFile, function (error, config) {
+        if (error) {
+          throw error;
+        }
+      });
     }
-  });
-};
+  };
+    
+
+}());
+

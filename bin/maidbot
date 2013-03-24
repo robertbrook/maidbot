@@ -18,5 +18,11 @@ var argv = require('optimist')
   .demand(1).argv;
 
 console.log("\u001b[36mmaidbot\u001b[0;1m " + version + "\u001b[0m");
-// Start maidbot.
-maidbot(argv);
+
+if (argv["check-config"]) {
+  // Check configuration file for errors.
+  maidbot.testConfig(argv._[0]);
+} else {
+  // Start maidbot.
+  maidbot.init(argv._[0]);
+}
