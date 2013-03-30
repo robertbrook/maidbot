@@ -3,11 +3,12 @@
  * Copyright (c) 2013 vomitcuddle <shinku@dollbooru.org>
  * License: ISC
  */
-var configLoader = require("./config/loader.js");
+var configLoader = require("./config/loader.js"),
+    twitter = require("./twitter.js");
 
 module.exports = (function () { 
   /** Private fields. */
-  var mConfig; 
+  var mConfig, mTwitter;
 
   /** Private Methods */
   
@@ -31,6 +32,7 @@ module.exports = (function () {
           throw error;
         } else {
           mConfig = config;
+          mTwitter = twitter(config);
         }
       });
     },
