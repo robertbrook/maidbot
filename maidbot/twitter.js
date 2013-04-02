@@ -154,6 +154,35 @@ module.exports = function (config) {
       reply(pickRandomTweet(replies).body, data);
     }
   };
+  
+  // Handle new followers.
+  var onNewFollower = function (data) {
+    var replies = [];
+
+    // Console log.
+    console.log("New follower: @" + data.source.screen_name);
+
+    // Make sure user isn't silently ignored.
+    if (config.ignored_users.indexOf(data.source.id_str) > -1) {
+      // Do nothing.
+      return;
+    }
+
+    // Auto follow back.
+    if (config.auto_follow_back) {
+      console.log("Following: " + data.source.screen_name);
+      twitter.createFriendship(data.source.id, function (error, data) {
+        if (error) {
+          console.error("Could not create friendship: " + data);
+        }
+      });
+    }
+
+    // New follower greeting.
+    if (tweets.follower.length > 0) {
+      tweet("@" + data.source.screen_name + " " + pickRandomTweet(tweets.follower).body);
+    }
+  };
 
   // Update status with random tweet.
   var onRandomInterval = function () {
