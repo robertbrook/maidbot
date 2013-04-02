@@ -52,7 +52,8 @@
     },
     { "body": "Good night.",
       "type": ["timeline", "reply"],
-      "filters": {"matches": "good night"}
+      "filters": {"matches": "good night",
+                  "matches": "nini"}
     },
     { "body": "Thank you for following me *bow*",
       "type": ["follower"]
@@ -71,7 +72,7 @@
     },
     { "body": "BEEP BEEP",
       "type": ["timeline"],
-      "filters": {"matches": "beep beep"}
+      "filters": {"matches": "beep"}
     }
 
   ],
