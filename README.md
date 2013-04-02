@@ -24,9 +24,9 @@ There's an example configuration file under `example/maidbot.json` and a JSON sc
 var maidbot_config = {
   "twitter_api": { // Twitter API settings. See: http://dev.twitter.com. Required.
     "consumer_key": "",
-    "consumer_secret: "",
+    "consumer_secret": "",
     "access_token": "",
-    "access_token_secret: ""
+    "access_token_secret": ""
   },
 
   "auto_follow_back": true, // Follow new followers back. Defaults to true.
