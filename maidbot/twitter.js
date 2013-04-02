@@ -72,6 +72,9 @@ module.exports = function (config) {
 
   // Create a public status.
   var tweet = function (body) {
+    // Console log.
+    console.log("Updating status: " + body);
+    // Update status.
     twitter.updateStatus(body, function (err, data) {
       if (err) {
         console.error("Could not update status.");
@@ -84,6 +87,8 @@ module.exports = function (config) {
   var reply = function (body, tweet) {
     // Prepend username to tweet.
     body = "@" + tweet.user.screen_name + " " + body;
+    // Console log.
+    console.log("Replying: " + body);
     // Update status.
     twitter.updateStatus(body, {
       "in_reply_to_status_id": tweet.id
@@ -104,6 +109,9 @@ module.exports = function (config) {
   // Handle timeline tweets.
   var onTimeline = function (data) {
     var replies = [];
+
+    // Console log.
+    console.log("Timeline: @" + data.user.screen_name + " " + data.text);
 
     // Make sure user isn't silently ignored.
     if (config.ignored_users.indexOf(data.user.id_str) > -1) {
@@ -132,6 +140,9 @@ module.exports = function (config) {
   // Handle replies.
   var onReply = function (data) {
     var replies = [];
+    
+    // Console log.
+    console.log("Reply: @" + data.user.screen_name + " " + data.text);
 
     // Make sure user isn't silently ignored.
     if (config.ignored_users.indexOf(data.user.id_str) > -1) {
