@@ -5,7 +5,7 @@ Twitter bot inspired by [@MAID001](https://twitter.com/)
 
 ## Installation
 ```bash
-$ npm install maidbot
+$ npm install -g maidbot
 ```
 
 ## Running
