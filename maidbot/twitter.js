@@ -4,23 +4,6 @@
 var Twitter = require('mtwitter'),
     filters = require('./filters.js');
 
-// Compile tweets into these objects, so filters can be cached.
-var CompiledTweet = function (tweet) {
-  var me = {};
-  // Copy variables.
-  me.body = tweet.body;
-  me.type = tweet.type;
-  me.weight = tweet.weight;
-
-  // Compile filters.
-  me.filters = [];
-  for (var key in tweet.filters) {
-    me.filters.push(filterFactory[key](tweet.filters[key]));
-  }
-  
-  return me;
-};
-
 module.exports = function (config) {
   // Twitter API.
   var twitter;
