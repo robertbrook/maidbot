@@ -1,7 +1,7 @@
 {
   "name": "maidbot",
   "preferGlobal": true,
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "vomitcuddle <shinku@dollbooru.org>",
   "description": "a simple, configurable twitter bot inspired by @MAID001",
   "contributors": [],
