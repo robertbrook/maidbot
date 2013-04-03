@@ -28,5 +28,5 @@
   "devDependencies": {
     "mocha": "1.8.x"
   },
-  "license": "MIT"
+  "license": "ISC"
 }
