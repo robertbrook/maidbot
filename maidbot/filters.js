@@ -80,7 +80,7 @@ module.exports = function (caseSensitive) {
     // Return true if the person who made the tweet matches a given userid.
     userid: function (userid) {
       return function (tweet, callback) {
-        if (tweet.user.id === userid) {
+        if (tweet.user.id_str === userid) {
           if (callback) {
             callback(true, tweet);
           }

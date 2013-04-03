@@ -14,7 +14,8 @@ describe("Filters", function () {
     mockTweet = {
       "text": "soMe text",
       "user": {
-        "id": 12345678
+        "id": 12345678,
+        "id_str": "12345678"
       }
     };
   });
@@ -94,14 +95,14 @@ describe("Filters", function () {
   describe("userid", function () {
     it("matches userids", function () {
       var filter;
-      filter = filterFactory.userid(12345678);
+      filter = filterFactory.userid("12345678");
       assert(filter(mockTweet), "should match example");
-      filter = filterFactory.userid(123456);
+      filter = filterFactory.userid("123456");
       assert(!filter(mockTweet), "shouldn't match example");
     });
 
     it("callback style", function(done) {
-      var filter = filterFactory.userid(12345678);
+      var filter = filterFactory.userid("12345678");
       filter(mockTweet, function (shouldTweet, newTweet) {
         assert(shouldTweet);
         assert.deepEqual(newTweet, mockTweet, "shouldn't transform tweet objects in any way");

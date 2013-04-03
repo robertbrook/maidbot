@@ -305,7 +305,7 @@ describe("Configuration JSON schema", function () {
         "regexp": 23,
         "matches": [],
         "random": 32.3,
-        "userid": "thisisastringandnotanumber"
+        "userid": 123241255
       };
       // Validation.
       validation = jsonSchema.validate(configuration, configSchema);
@@ -320,7 +320,7 @@ describe("Configuration JSON schema", function () {
         { "property": "tweets[0].filters.random",
           "message": "number value found, but a integer is required" },
         { "property": "tweets[0].filters.userid",
-          "message": "string value found, but a integer is required" }
+          "message": "number value found, but a string is required" }
       ]);
     });
   });
@@ -353,6 +353,24 @@ describe("Configuration JSON schema", function () {
       assert.strictEqual(validation.errors.length, 1, "unexpected errors");
       assert.deepEqual(validation.errors, [
         { "property": "ignored_users[0]",
+          "message": "does not match the regex pattern ^[0-9]+$"
+        }
+      ]);
+    });
+
+    it("tweet.filters.userid", function () {
+      var validation;
+      // Setup.
+      configuration.tweets[0].filters = {
+        userid: "sfdf213ascv#@@!"
+      };
+      // Validation.
+      validation = jsonSchema.validate(configuration, configSchema);
+      // Asserts.
+      assert(!validation.valid, "should not validate");
+      assert.strictEqual(validation.errors.length, 1, "unexpected errors");
+      assert.deepEqual(validation.errors, [
+        { "property": "tweets[0].filters.userid",
           "message": "does not match the regex pattern ^[0-9]+$"
         }
       ]);
