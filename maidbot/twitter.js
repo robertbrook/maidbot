@@ -123,6 +123,7 @@ module.exports = function (config) {
   // Handle replies.
   var onReply = function (data) {
     var replies = [];
+    var filteredReplies = [];
     
     // Console log.
     console.log("Reply: @" + data.user.screen_name + " " + data.text);
@@ -141,14 +142,18 @@ module.exports = function (config) {
       } else {
         item.filters.forEach(function (filter) {
           if (filter(data)) {
-            replies.push(item);
+            filteredReplies.push(item);
           }
         });
       }
     });
 
     // Tweet response.
-    if (replies.length === 1) {
+    if (filteredReplies.length === 1) {
+      reply(filteredReplies[0].body, data);
+    } else if (filteredReplies.length > 1) {
+      reply(pickRandomTweet(filteredReplies).body, data);
+    } else if (replies.length === 1) {
       reply(replies[0].body, data);
     } else if (replies.length > 1) {
       reply(pickRandomTweet(replies).body, data);
