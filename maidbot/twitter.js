@@ -192,11 +192,11 @@ module.exports = function (config) {
   // Handle stream data.
   var onStreamData = function (data) {
     // New followers.
-    if (data.event && data.event === 'follow') {
+    if (data.event && data.event === 'follow' && data.source.id !== userid) {
       onNewFollower(data);
     }
     // Tweets.
-    if (data.text && !data.retweeted) {
+    if (data.text && !data.retweeted && data.user.id !== userid) {
       // Check if in_reply_to_user_id matches our user id.
       if (data.in_reply_to_user_id === userid) {
         // Is a reply.
