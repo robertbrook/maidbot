@@ -74,7 +74,7 @@ module.exports = function (config) {
     console.log("Replying: " + body);
     // Update status.
     twitter.updateStatus(body, {
-      "in_reply_to_status_id": tweet.id
+      "in_reply_to_status_id": tweet.id_str
     }, function (err, data) {
       if (err) {
         console.error("Could not update status.");
@@ -171,7 +171,7 @@ module.exports = function (config) {
     // Auto follow back.
     if (config.auto_follow_back) {
       console.log("Following: " + data.source.screen_name);
-      twitter.createFriendship(data.source.id, function (error, data) {
+      twitter.createFriendship(data.source.id_str, function (error, data) {
         if (error) {
           console.error("Could not create friendship: " + data);
         }
@@ -192,13 +192,13 @@ module.exports = function (config) {
   // Handle stream data.
   var onStreamData = function (data) {
     // New followers.
-    if (data.event && data.event === 'follow' && data.source.id !== userid) {
+    if (data.event && data.event === 'follow' && data.source.id_str !== userid) {
       onNewFollower(data);
     }
     // Tweets.
-    if (data.text && !data.retweeted && data.user.id !== userid) {
+    if (data.text && !data.retweeted && data.user.id_str !== userid) {
       // Check if in_reply_to_user_id matches our user id.
-      if (data.in_reply_to_user_id === userid) {
+      if (data.in_reply_to_user_id_str === userid) {
         // Is a reply.
         onReply(data);
       } else {
@@ -247,7 +247,7 @@ module.exports = function (config) {
       } else {
         console.log("Logged in as: @" + data.screen_name);
         // Set own user id.
-        userid = data.id;
+        userid = data.id_str;
         // Create stream.
         createStream();
         // Enable random tweets.
