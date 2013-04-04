@@ -206,7 +206,7 @@ module.exports = function (config) {
       if (data.in_reply_to_user_id_str === userid) {
         // Is a reply.
         onReply(data);
-      } else {
+      } else if (!data.in_reply_to_user_id_str) {
         // Isn't a reply.
         onTimeline(data);
       }
