@@ -176,7 +176,7 @@ module.exports = function (config) {
     // Auto follow back.
     if (config.auto_follow_back) {
       console.log("Following: " + data.source.screen_name);
-      twitter.createFriendship(data.source.id_str, function (error, data) {
+      twitter.createFriendship(data.source.screen_name, function (error, data) {
         if (error) {
           console.error("Could not create friendship: " + data);
         }
