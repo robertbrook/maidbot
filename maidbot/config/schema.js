@@ -52,7 +52,7 @@ var tweet_schema = {
       "minItems": 1,
       "items": {
         "type": "string",
-        "enum": ["random", "timeline", "reply", "follower"]
+        "enum": ["random", "timeline", "reply", "follower", "retweet"]
       },
       "required": true
     },

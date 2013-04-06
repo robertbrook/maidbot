@@ -12,7 +12,8 @@ module.exports = function (config) {
     random: [],
     timeline: [],
     reply: [],
-    follower: []
+    follower: [],
+    retweet: []
   };
   // Own user ID.
   var userid = 0;
@@ -37,7 +38,7 @@ module.exports = function (config) {
         }
       }
 
-      // Add tweets to arrays.
+      // Populate tweet arrays.
       if (cTweet.type.indexOf("random") > -1) {
         tweets.random.push(cTweet);
       }
@@ -49,6 +50,9 @@ module.exports = function (config) {
       }
       if (cTweet.type.indexOf("follower") > -1) {
         tweets.follower.push(cTweet);
+      }
+      if (cTweet.type.indexOf("retweet") > -1) {
+        tweets.retweet.push(cTweet);
       }
     });
   };
@@ -83,10 +87,42 @@ module.exports = function (config) {
     });
   };
   
+  // Retweets a status.
+  var retweet = function (data) {
+    // Console log.
+    console.log("Retweeting: " + data.text);
+
+    // Retweet status.
+    twitter.retweetStatus(data.id_str, function (err) {
+      if (err) {
+        console.error("Could not retweet status.");
+      }
+    });
+  };
+  
   // Returns a random item from an array of tweets.
   var pickRandomTweet = function (tweets) {
     // TODO: Implement biased weight.
     return tweets[Math.floor(Math.random()*tweets.length)];
+  };
+  
+  // Handle retweeting matching tweets.
+  var onHandleRetweet = function (data) {
+    var shouldRetweet = false;
+    
+    // Run tweet through filters.
+    tweets.retweet.forEach(function (tweet) {
+      tweet.filters.forEach(function (filter) {
+        if (filter(data)) {
+          shouldRetweet = true;
+        }
+      });
+    });
+    
+    // Retweet status.
+    if (shouldRetweet) {
+      retweet(data);
+    }
   };
 
   // Handle timeline tweets.
@@ -209,6 +245,11 @@ module.exports = function (config) {
       } else if (!data.in_reply_to_user_id_str) {
         // Isn't a reply.
         onTimeline(data);
+      }
+
+      // Retweets.
+      if (tweets.retweet.length > 0) {
+        onHandleRetweet(data);
       }
     }
   };
