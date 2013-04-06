@@ -62,10 +62,9 @@ module.exports = function (config) {
     // Console log.
     console.log("Updating status: " + body);
     // Update status.
-    twitter.updateStatus(body, function (err, data) {
-      if (err) {
-        console.error("Could not update status.");
-        console.error(data);
+    twitter.updateStatus(body, function (error, data) {
+      if (error) {
+        console.error("Could not update status: " + error.message);
       }
     });
   };
@@ -79,10 +78,9 @@ module.exports = function (config) {
     // Update status.
     twitter.updateStatus(body, {
       "in_reply_to_status_id": tweet.id_str
-    }, function (err, data) {
-      if (err) {
-        console.error("Could not update status.");
-        console.error(data);
+    }, function (error, data) {
+      if (error) {
+        console.error("Could not update status: " + error.message);
       }
     });
   };
@@ -214,7 +212,7 @@ module.exports = function (config) {
       console.log("Following: " + data.source.screen_name);
       twitter.createFriendship(data.source.screen_name, function (error, data) {
         if (error) {
-          console.error("Could not create friendship: " + data);
+          console.error("Could not create friendship: " + error.message);
         }
       });
     }
