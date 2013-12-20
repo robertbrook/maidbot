@@ -1,4 +1,4 @@
-Twitter bot inspired by [@MAID001](https://twitter.com/)
+Twitter bot inspired by [twittbot.net](https://twittbot.net/)
 
 [![Build Status](https://travis-ci.org/vomitcuddle/maidbot.png)](https://travis-ci.org/vomitcuddle/maidbot)
 [![NPM version](https://badge.fury.io/js/maidbot.png)](http://badge.fury.io/js/maidbot)
