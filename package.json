@@ -17,6 +17,7 @@
     "bot"
   ],
   "dependencies": {
+    "json-schema": "0.2.x"
   },
   "devDependencies": {
   },
