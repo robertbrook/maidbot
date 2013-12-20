@@ -1,6 +1,7 @@
 // This file is part of maidbot.
 // Copyright (c) 2013 vomitcuddle <shinku@dollbooru.org>
 // License: MIT
+var fs = require('fs');
 var jsonschema = require('json-schema');
 var schema = require('./schema.js');
 
@@ -13,7 +14,7 @@ var parseConfig = function (data, callback) {
   var validation;
   try {
     data = JSON.parse(data);
-    validation = jsonSchema.validate(data, schema);
+    validation = jsonschema.validate(data, schema);
     if (!validation.valid)
       throw new Error(validation.errors.join('\n'));
     callback(null, data);
