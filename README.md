@@ -3,6 +3,7 @@ Twitter bot inspired by [@MAID001](https://twitter.com/)
 [![Build Status](https://travis-ci.org/vomitcuddle/maidbot.png)](https://travis-ci.org/vomitcuddle/maidbot)
 [![NPM version](https://badge.fury.io/js/maidbot.png)](http://badge.fury.io/js/maidbot)
 [![Dependency Status](https://gemnasium.com/vomitcuddle/maidbot.png)](https://gemnasium.com/vomitcuddle/maidbot)
+[![Code Climate](https://codeclimate.com/github/vomitcuddle/maidbot.png)](https://codeclimate.com/github/vomitcuddle/maidbot)
 
 ## Installation
 ```bash
@@ -15,7 +16,7 @@ $ maidbot config_file.json
 ```
 
 ## Configuration
-Maidbot uses JSON files for configuration. 
+Maidbot uses JSON files for configuration.
 There's an example configuration file under `example/maidbot.json` and a JSON schema under `maidbot/config/schema.js`.
 
 #### Example configuration
@@ -43,7 +44,7 @@ var maidbot_config = {
       }
     }
   ],
-        
+
   "ignored_users": ["148684820"] // Array of user IDs to silently ignore.
 };
 ```
