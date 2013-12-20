@@ -15,8 +15,9 @@ var parseConfig = function (data, callback) {
   try {
     data = JSON.parse(data);
     validation = jsonschema.validate(data, schema);
-    if (!validation.valid)
+    if (!validation.valid) {
       throw new Error(validation.errors.join('\n'));
+    }
     callback(null, data);
   } catch (err) {
     callback(new Error("Error parsing configuration file:\n" + err.message));
