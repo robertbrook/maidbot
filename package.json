@@ -1,14 +1,10 @@
 {
   "name": "maidbot",
   "preferGlobal": true,
-  "version": "1.0.5",
+  "version": "2.0.0",
   "author": "vomitcuddle <shinku@dollbooru.org>",
-  "description": "a simple, configurable twitter bot inspired by @MAID001",
+  "description": "a simple, configurable twitter bot inspired by twittbot.net",
   "contributors": [],
-  "main": "./maidbot",
-  "bin": {
-    "maidbot": "./bin/maidbot"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/vomitcuddle/maidbot.git"
@@ -21,12 +17,8 @@
     "bot"
   ],
   "dependencies": {
-    "mtwitter": "1.0.x",
-    "optimist": "0.3.x",
-    "json-schema": "0.2.x"
   },
   "devDependencies": {
-    "mocha": "1.9.x"
   },
-  "license": "ISC"
+  "license": "MIT"
 }
