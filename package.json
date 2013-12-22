@@ -21,7 +21,8 @@
     "twit": "1.x"
   },
   "devDependencies": {
-    "mocha": "1.x"
+    "mocha": "1.x",
+    "mockery": "1.x"
   },
   "license": "MIT"
 }
