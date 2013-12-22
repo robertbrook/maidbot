@@ -2,7 +2,7 @@
 // Copyright (c) 2013 vomitcuddle <shinku@dollbooru.org>
 // License: MIT
 var EventEmitter = require('events').EventEmitter;
-var utils = require('utils');
+var util = require('util');
 var Twit = require('twit');
 
 /**
@@ -105,7 +105,7 @@ Twitter.prototype.reply = function (tweet, status, callback) {
  * @param {String} user_id User ID.
  * @param {Function} callback Callback function.
  */
-Twitter.prototype.follow = function (user_id) {
+Twitter.prototype.follow = function (user_id, callback) {
   this.twit.post('friendships/create', {user_id: user_id}, callback);
 };
 
@@ -114,7 +114,7 @@ Twitter.prototype.follow = function (user_id) {
  * @param {String} user_id User ID.
  * @param {Function} callback Callback function.
  */
-Twitter.prototype.unfollow = function (user_id) {
+Twitter.prototype.unfollow = function (user_id, callback) {
   this.twit.post('friendships/destroy', {user_id: user_id}, callback);
 };
 
