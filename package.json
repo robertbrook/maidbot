@@ -20,7 +20,8 @@
     "json-schema": "0.2.x"
   },
   "devDependencies": {
-    "mocha": "1.x"
+    "mocha": "1.x",
+    "should": "2.x"
   },
   "license": "MIT"
 }
