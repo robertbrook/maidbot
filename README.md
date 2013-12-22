@@ -1,4 +1,4 @@
-Twitter bot inspired by [twittbot.net](https://twittbot.net/)
+Twitter bot inspired by [twittbot.net](https://twittbot.net/). This project is currently undergoing a rewrite. If you're looking to actually run this thing, take a look at the [v1.0.5](https://github.com/vomitcuddle/maidbot/tree/v1.0.5) tag.
 
 [![Build Status](https://travis-ci.org/vomitcuddle/maidbot.png)](https://travis-ci.org/vomitcuddle/maidbot)
 [![NPM version](https://badge.fury.io/js/maidbot.png)](http://badge.fury.io/js/maidbot)
@@ -48,7 +48,3 @@ var maidbot_config = {
   "ignored_users": ["148684820"] // Array of user IDs to silently ignore.
 };
 ```
-
-## Wishlist
-* A better way to define your own filters.
-* Stats
