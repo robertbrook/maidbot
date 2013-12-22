@@ -2,8 +2,7 @@
 // This file is part of maidbot.
 // Copyright (c) 2013 vomitcuddle <shinku@dollbooru.org>
 // License: MIT
-var EventEmitter = require('events').EventEmitter;
-var util = require('util');
+var mockstream = require('./mock-stream');
 
 /**
  * Create a new instance of the mock class.
@@ -72,10 +71,8 @@ Twit.prototype.post = function (path, params, callback) {
  * @param {@Object} params Request parameters.
  */
 Twit.prototype.stream = function (path, params) {
-  // TODO: implement me.
-  throw new Error('Not implemented.');
+  return new mockstream(path, params);
 };
-
 
 // Export module.
 module.exports = Twit;
