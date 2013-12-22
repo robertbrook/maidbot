@@ -45,15 +45,15 @@ Twitter.prototype.verifyCredentials = function(callback) {
 
 /**
  * Initiate connection to the twitter user stream.
+ * @param {Function} callback Callback function.
  */
-Twitter.prototype.connect = function () {
+Twitter.prototype.connect = function (callback) {
   var self = this;
 
   // Get user credentials.
   this.verify_credentials(function (error) {
     if (error) {
-      // TODO: call callback function.
-      return;
+      return callback(new Error("Could not verify credentials\n" + error.message));
     }
     // Create user stream and listen for events.
     self.stream = self.twit.stream('user');
@@ -74,43 +74,48 @@ Twitter.prototype.connect = function () {
         }
       }
     });
+    callback();
   });
 };
 
 /**
  * Post a new tweet.
  * @param {String} status Message to tweet.
+ * @param {Function} callback Callback function.
  */
-Twitter.prototype.tweet = function (message) {
-  this.twit.post('statuses/update', {status: status});
+Twitter.prototype.tweet = function (message, callback) {
+  this.twit.post('statuses/update', {status: status}, callback);
 };
 
 /**
  * Reply to a tweet mentioning users being replied to.
  * @param {Object} tweet Tweet being replied to.
  * @param {String} status Message to tweet.
+ * @param {Function} callback Callback function.
  */
-Twitter.prototype.reply = function (tweet, status) {
+Twitter.prototype.reply = function (tweet, status, callback) {
   this.twit.post('statuses/update', {
     in_reply_to_status_id: tweet.id_str,
     status: '@' + tweet.user.screen_name + ' ' + status
-  });
+  }, callback);
 };
 
 /**
  * Follows a new user.
  * @param {String} user_id User ID.
+ * @param {Function} callback Callback function.
  */
 Twitter.prototype.follow = function (user_id) {
-  this.twit.post('friendships/create', {user_id: user_id});
+  this.twit.post('friendships/create', {user_id: user_id}, callback);
 };
 
 /**
  * Unfollows a user.
  * @param {String} user_id User ID.
+ * @param {Function} callback Callback function.
  */
 Twitter.prototype.unfollow = function (user_id) {
-  this.twit.post('friendships/destroy', {user_id: user_id});
+  this.twit.post('friendships/destroy', {user_id: user_id}, callback);
 };
 
 // Module exports.
