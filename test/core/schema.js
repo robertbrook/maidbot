@@ -1,19 +1,17 @@
-/**
- * This file is part of maidbot.
- * Copyright (c) 2013 <shinku@dollbooru.org>
- * License: ISC
- */
+// This file is part of maidbot.
+// Copyright (c) 2013 vomitcuddle <shinku@dollbooru.org>
+// License: MIT
 
 var assert = require('assert'),
-    jsonSchema = require('json-schema'),
-    configSchema = require('../maidbot/config/schema.js');
+    jsonschema = require('json-schema'),
+    schema = require('../../core/schema.js');
 
-describe("Configuration JSON schema", function () {
-  var configuration;
-  
+describe("config JSON schema", function () {
+  var config;
+
   beforeEach(function () {
-    // Reset configuration.
-    configuration = {
+    // Reset config.
+    config = {
       "twitter_api": {
         "consumer_key": "",
         "consumer_secret": "",
@@ -29,53 +27,53 @@ describe("Configuration JSON schema", function () {
   });
 
   it("validates as JSON schema draft 4", function () {
-    assert(jsonSchema.validate(configSchema).valid, "validation failed");
+    assert(jsonschema.validate(schema).valid, "validation failed");
   });
 
-  it("validates example configuration", function () {
-    assert(jsonSchema.validate(configuration, configSchema).valid, "validation failed");
+  it("validates example config", function () {
+    assert(jsonschema.validate(config, schema).valid, "validation failed");
   });
 
   describe("sets default", function () {
     it("auto_follow_back", function () {
-      var validation = jsonSchema.validate(configuration, configSchema);
-      assert.strictEqual(configuration.auto_follow_back, true);
+      var validation = jsonschema.validate(config, schema);
+      assert.strictEqual(config.auto_follow_back, true);
     });
 
     it("random_tweet_enable", function () {
-      var validation = jsonSchema.validate(configuration, configSchema);
-      assert.strictEqual(configuration.random_tweet_enable, true);
+      var validation = jsonschema.validate(config, schema);
+      assert.strictEqual(config.random_tweet_enable, true);
     });
 
     it("random_tweet_interval", function () {
-      var validation = jsonSchema.validate(configuration, configSchema);
-      assert.strictEqual(configuration.random_tweet_interval, 60);
+      var validation = jsonschema.validate(config, schema);
+      assert.strictEqual(config.random_tweet_interval, 60);
     });
 
     it("filters_case_insensitive", function () {
-      var validation = jsonSchema.validate(configuration, configSchema);
-      assert.strictEqual(configuration.filters_case_insensitive, true);
+      var validation = jsonschema.validate(config, schema);
+      assert.strictEqual(config.filters_case_insensitive, true);
     });
 
     it("ignored_users", function () {
-      var validation = jsonSchema.validate(configuration, configSchema);
-      assert.deepEqual(configuration.ignored_users, []);
+      var validation = jsonschema.validate(config, schema);
+      assert.deepEqual(config.ignored_users, []);
     });
 
     it("tweets.items.properties", function () {
-      var validation = jsonSchema.validate(configuration, configSchema);
-      assert.deepEqual(configuration.tweets[0].filters, {}, ".filters should default to an empty object");
-      assert.strictEqual(configuration.tweets[0].weight, 1, ".weight should default to 1");
+      var validation = jsonschema.validate(config, schema);
+      assert.deepEqual(config.tweets[0].filters, {}, ".filters should default to an empty object");
+      assert.strictEqual(config.tweets[0].weight, 1, ".weight should default to 1");
     });
   });
 
   describe("requires", function () {
     it("twitter_api", function () {
       var validation;
-      // Setup 
-      delete configuration.twitter_api;
+      // Setup
+      delete config.twitter_api;
       // Validation
-      validation = jsonSchema.validate(configuration, configSchema);
+      validation = jsonschema.validate(config, schema);
       // Asserts
       assert(validation.valid === false, "should not validate");
       assert.strictEqual(validation.errors.length, 1, "unexpected errors");
@@ -88,12 +86,12 @@ describe("Configuration JSON schema", function () {
     it("twitter_api.properties", function () {
       var validation;
       // Setup
-      delete configuration.twitter_api.consumer_key;
-      delete configuration.twitter_api.consumer_secret;
-      delete configuration.twitter_api.access_token;
-      delete configuration.twitter_api.access_token_secret;
+      delete config.twitter_api.consumer_key;
+      delete config.twitter_api.consumer_secret;
+      delete config.twitter_api.access_token;
+      delete config.twitter_api.access_token_secret;
       // Validation
-      validation = jsonSchema.validate(configuration, configSchema);
+      validation = jsonschema.validate(config, schema);
       // Asserts
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 4, "unexpected errors");
@@ -112,9 +110,9 @@ describe("Configuration JSON schema", function () {
     it("tweets", function () {
       var validation;
       // Setup.
-      delete configuration.tweets;
+      delete config.tweets;
       // Validation.
-      validation = jsonSchema.validate(configuration, configSchema);
+      validation = jsonschema.validate(config, schema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 1, "unexpected errors");
@@ -127,9 +125,9 @@ describe("Configuration JSON schema", function () {
     it("at least one tweet", function () {
       var validation;
       // Setup.
-      configuration.tweets.pop();
+      config.tweets.pop();
       // Validation.
-      validation = jsonSchema.validate(configuration, configSchema);
+      validation = jsonschema.validate(config, schema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 1, "unexpected errors");
@@ -142,9 +140,9 @@ describe("Configuration JSON schema", function () {
     it("at least one tweets.items.properties.type", function () {
       var validation;
       // Setup.
-      configuration.tweets[0].type = [];
+      config.tweets[0].type = [];
       // Validation.
-      validation = jsonSchema.validate(configuration, configSchema);
+      validation = jsonschema.validate(config, schema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.deepEqual(validation.errors, [
@@ -156,10 +154,10 @@ describe("Configuration JSON schema", function () {
     it("tweets.items.properties", function () {
       var validation;
       // Setup.
-      delete configuration.tweets[0].body;
-      delete configuration.tweets[0].type;
+      delete config.tweets[0].body;
+      delete config.tweets[0].type;
       // Validation.
-      validation = jsonSchema.validate(configuration, configSchema);
+      validation = jsonschema.validate(config, schema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 2, "unexpected errors");
@@ -176,9 +174,9 @@ describe("Configuration JSON schema", function () {
     it("auto_follow_back", function () {
       var validation;
       // Setup.
-      configuration.auto_follow_back = 1;
+      config.auto_follow_back = 1;
       // Validation.
-      validation = jsonSchema.validate(configuration, configSchema);
+      validation = jsonschema.validate(config, schema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 1, "unexpected errors");
@@ -191,9 +189,9 @@ describe("Configuration JSON schema", function () {
     it("random_tweet_enable", function () {
       var validation;
       // Setup.
-      configuration.random_tweet_enable = 1;
+      config.random_tweet_enable = 1;
       // Validation.
-      validation = jsonSchema.validate(configuration, configSchema);
+      validation = jsonschema.validate(config, schema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 1, "unexpected errors");
@@ -206,9 +204,9 @@ describe("Configuration JSON schema", function () {
     it("random_tweet_interval", function () {
       var validation;
       // Setup.
-      configuration.random_tweet_interval = 50.1; 
+      config.random_tweet_interval = 50.1;
       // Validation.
-      validation = jsonSchema.validate(configuration, configSchema);
+      validation = jsonschema.validate(config, schema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 1, "unexpected errors");
@@ -221,9 +219,9 @@ describe("Configuration JSON schema", function () {
     it("filters_case_insensitive", function () {
       var validation;
       // Setup.
-      configuration.filters_case_insensitive = 1;
+      config.filters_case_insensitive = 1;
       // Validation.
-      validation = jsonSchema.validate(configuration, configSchema);
+      validation = jsonschema.validate(config, schema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 1, "unexpected errors");
@@ -236,9 +234,9 @@ describe("Configuration JSON schema", function () {
     it("ignored_users", function () {
       var validation;
       // Setup.
-      configuration.ignored_users = 1;
+      config.ignored_users = 1;
       // Validation.
-      validation = jsonSchema.validate(configuration, configSchema);
+      validation = jsonschema.validate(config, schema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 1, "unexpected errors");
@@ -251,12 +249,12 @@ describe("Configuration JSON schema", function () {
     it("twitter_api.properties", function () {
       var validation;
       // Setup.
-      configuration.twitter_api.consumer_key = true;
-      configuration.twitter_api.consumer_secret = 11;
-      configuration.twitter_api.access_token = 32.2;
-      configuration.twitter_api.access_token_secret = [];
+      config.twitter_api.consumer_key = true;
+      config.twitter_api.consumer_secret = 11;
+      config.twitter_api.access_token = 32.2;
+      config.twitter_api.access_token_secret = [];
       // Validation.
-      validation = jsonSchema.validate(configuration, configSchema);
+      validation = jsonschema.validate(config, schema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 4, "unexpected errors");
@@ -271,16 +269,16 @@ describe("Configuration JSON schema", function () {
           "message": "object value found, but a string is required" }
         ]);
     });
-    
+
     it("tweets.items.properties", function () {
       var validation;
       // Setup.
-      configuration.tweets[0].body = true;
-      configuration.tweets[0].type = 'random';
-      configuration.tweets[0].filters = 500;
-      configuration.tweets[0].weight = 2.32;
+      config.tweets[0].body = true;
+      config.tweets[0].type = 'random';
+      config.tweets[0].filters = 500;
+      config.tweets[0].weight = 2.32;
       // Validation.
-      validation = jsonSchema.validate(configuration, configSchema);
+      validation = jsonschema.validate(config, schema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 5, "unexpected errors");
@@ -301,14 +299,14 @@ describe("Configuration JSON schema", function () {
     it("tweets.items.filters.properties", function () {
       var validation;
       // Setup.
-      configuration.tweets[0].filters = {
+      config.tweets[0].filters = {
         "regexp": 23,
         "matches": [],
         "random": 32.3,
         "userid": 123241255
       };
       // Validation.
-      validation = jsonSchema.validate(configuration, configSchema);
+      validation = jsonschema.validate(config, schema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 4, "unexpected errors");
@@ -329,9 +327,9 @@ describe("Configuration JSON schema", function () {
     it("random_tweet_interval", function () {
       var validation;
       // Setup.
-      configuration.random_tweet_interval = 4;
+      config.random_tweet_interval = 4;
       // Validation.
-      validation = jsonSchema.validate(configuration, configSchema);
+      validation = jsonschema.validate(config, schema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 1, "unexpected errors");
@@ -345,9 +343,9 @@ describe("Configuration JSON schema", function () {
     it("ignored_users.items", function () {
       var validation;
       // Setup.
-      configuration.ignored_users = ["sfdf213ascv#@@!"];
+      config.ignored_users = ["sfdf213ascv#@@!"];
       // Validation.
-      validation = jsonSchema.validate(configuration, configSchema);
+      validation = jsonschema.validate(config, schema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 1, "unexpected errors");
@@ -361,11 +359,11 @@ describe("Configuration JSON schema", function () {
     it("tweet.filters.userid", function () {
       var validation;
       // Setup.
-      configuration.tweets[0].filters = {
+      config.tweets[0].filters = {
         userid: "sfdf213ascv#@@!"
       };
       // Validation.
-      validation = jsonSchema.validate(configuration, configSchema);
+      validation = jsonschema.validate(config, schema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 1, "unexpected errors");
@@ -379,9 +377,9 @@ describe("Configuration JSON schema", function () {
     it("tweets.items.weight", function () {
       var validation;
       // Setup.
-      configuration.tweets[0].weight = -1;
+      config.tweets[0].weight = -1;
       // Validation.
-      validation = jsonSchema.validate(configuration, configSchema);
+      validation = jsonschema.validate(config, schema);
       // Asserts.
       assert(!validation.valid, "should not validate");
       assert.strictEqual(validation.errors.length, 1, "unexpected errors");

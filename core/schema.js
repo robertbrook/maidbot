@@ -1,8 +1,6 @@
-/** 
- * This file is part of maidbot.
- * Copyright (c) 2013 vomitcuddle <shinku@dollbooru.org>
- * License: ISC
- */
+// This file is part of maidbot
+// Copyright (c) 2013 vomitcuddle <shinku@dollbooru.org>
+// License: MIT
 
 // Twitter configuration schema.
 var twitter_api_schema = {
