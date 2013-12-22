@@ -25,9 +25,11 @@ Twit.prototype.get = function (path, params, callback) {
 
   // Return mock response.
   if (path === 'account/verify_credentials') {
-    callback(null, {
-      'id_str': '38895958',
-      'screen_name': 'maid009'
+    process.nextTick(function () {
+      callback(null, {
+        'id_str': '38895958',
+        'screen_name': 'maid009'
+      });
     });
   } else {
     callback(new Error('Not implemented.'));
@@ -46,23 +48,25 @@ Twit.prototype.post = function (path, params, callback) {
     params = {};
   }
 
-  // Return mock response.
-  if (path === 'statuses/update') {
-    callback(null, {
-      'text': params.status || null,
-      'in_reply_to_status_id_str': params.in_reply_to_status_id_str || null
-    });
-  } else if (path === 'friendships/create') {
-    callback(null, {
-      'id_str': params.user_id || null
-    });
-  } else if (path === 'friendships/destroy') {
-    callback(null, {
-      'id_str': params.user_id || null
-    });
-  } else {
-    callback(new Error('Not implemented'));
-  }
+  process.nextTick(function () {
+    // Return mock response.
+    if (path === 'statuses/update') {
+      callback(null, {
+        'text': params.status || null,
+        'in_reply_to_status_id_str': params.in_reply_to_status_id_str || null
+      });
+    } else if (path === 'friendships/create') {
+      callback(null, {
+        'id_str': params.user_id || null
+      });
+    } else if (path === 'friendships/destroy') {
+      callback(null, {
+        'id_str': params.user_id || null
+      });
+    } else {
+      callback(new Error('Not implemented'));
+    }
+  });
 };
 
 /**
