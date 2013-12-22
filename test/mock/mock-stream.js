@@ -2,7 +2,7 @@
 // This file is part of maidbot.
 // Copyright (c) 2013 vomitcuddle <shinku@dollbooru.org>
 // License: MIT
-var EventEmitter = require('event').EventEmitter;
+var EventEmitter = require('events').EventEmitter;
 var util = require('util');
 
 /**
