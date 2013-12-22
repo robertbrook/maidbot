@@ -53,7 +53,7 @@ Twit.prototype.post = function (path, params, callback) {
     if (path === 'statuses/update') {
       callback(null, {
         'text': params.status || null,
-        'in_reply_to_status_id_str': params.in_reply_to_status_id_str || null
+        'in_reply_to_status_id_str': params.in_reply_to_status_id || null
       });
     } else if (path === 'friendships/create') {
       callback(null, {

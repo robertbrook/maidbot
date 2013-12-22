@@ -51,7 +51,7 @@ Twitter.prototype.connect = function (callback) {
   var self = this;
 
   // Get user credentials.
-  this.verify_credentials(function (error) {
+  this.verifyCredentials(function (error) {
     if (error) {
       return callback(new Error("Could not verify credentials\n" + error.message));
     }
@@ -74,7 +74,9 @@ Twitter.prototype.connect = function (callback) {
         }
       }
     });
-    callback();
+    if (callback) {
+      callback();
+    }
   });
 };
 
@@ -83,7 +85,7 @@ Twitter.prototype.connect = function (callback) {
  * @param {String} status Message to tweet.
  * @param {Function} callback Callback function.
  */
-Twitter.prototype.tweet = function (message, callback) {
+Twitter.prototype.tweet = function (status, callback) {
   this.twit.post('statuses/update', {status: status}, callback);
 };
 

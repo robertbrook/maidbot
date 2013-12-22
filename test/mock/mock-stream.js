@@ -40,6 +40,9 @@ MockStream.prototype.stream = function (path, params) {
     self.emit('tweet', {
       'text': 'abc123'
     });
+    self.emit('garbage', {
+      'abc': '123'
+    });
   });
 };
 
