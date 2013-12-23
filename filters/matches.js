@@ -1,6 +1,6 @@
 // filters/matches.js - Looks for substring in tweets.
 // This file is part of maidbot.
-// Copyright (c) vomitcuddle <shinku@dollbooru.org>
+// Copyright (c) 2013 vomitcuddle <shinku@dollbooru.org>
 // License: MIT
 
 /**
