@@ -9,6 +9,9 @@
  * @returns {Boolean} Returns true (1/weight)*100 percent of the time.
  */
 function random (weight) {
+  if (typeof weight !== 'number') {
+    weight = 50;
+  }
   return Math.ceil(Math.random()*100) < weight;
 }
 
