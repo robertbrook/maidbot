@@ -7,12 +7,13 @@
  * Filters tweets based on regular expressions.
  * @param {String} regex Regular expression string.
  * @param {Object} tweet Tweet to filter.
+ * @param {Boolean} caseInsensitive Enable case-insensitive mode.
  * @return {Boolean} True if tweet matches the regular expression.
  */
-function regexp (regex, tweet) {
+function regexp (regex, tweet, caseInsensitive) {
   // Compile regexp if necessary.
   if (!(regex instanceof RegExp)) {
-    regex = new RegExp(regex);
+    regex = new RegExp(regex, caseInsensitive ? 'i' : undefined);
   }
   return regex.test(tweet.text);
 }

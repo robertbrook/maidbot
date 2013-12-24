@@ -12,6 +12,10 @@ describe('filters/regexp.js', function () {
   it('tests regexp "^[\\c_]$"', function () {
      regexp("^[\\c_]$", {text: 'c'}).should.be.false;
   });
+  it('has case-insensitive mode', function () {
+    regexp('abc', {text: 'aBc'}, true).should.be.true;
+    regexp('abc', {text: 'aBc'}).should.be.false;
+  });
   it('optionally takes a RegExp as first argument', function () {
     regexp(/^[\c]]$/, {text: 'c]'}).should.be.true;
   });

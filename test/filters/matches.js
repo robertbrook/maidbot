@@ -15,4 +15,8 @@ describe('filters/matches.js', function () {
   it('returns false when it finds no matches', function () {
     matches('HONK HONK', {text: '@MAID009 BEEP BEEP'}).should.be.false;
   });
+  it('has case-insenstive mode', function () {
+    matches('honk honk', {text: 'HONK HONK'}, true).should.be.true;
+    matches('honk honk', {text: 'HONK HONK'}).should.be.false;
+  });
 });
