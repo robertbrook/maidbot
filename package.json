@@ -23,7 +23,8 @@
   "devDependencies": {
     "mocha": "1.x",
     "should": "2.x",
-    "mockery": "1.x"
+    "mockery": "1.x",
+    "mocktwit": "*"
   },
   "license": "MIT"
 }
