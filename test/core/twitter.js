@@ -3,7 +3,7 @@
 // Copyright (c) 2013 vomitcuddle <shinku@dollbooru.org>
 // License: MIT
 var mockery = require('mockery');
-var mocktwit = require('../mock/mock-twit');
+var mocktwit = require('mocktwit');
 var should = require('should');
 var twitter;
 
@@ -24,6 +24,10 @@ describe('twitter.Twitter', function () {
   });
 
   it('calls the api to set user credentials', function (done) {
+    mocktwit.setMockResponse({
+      id_str: '38895958',
+      screen_name: 'maid009'
+    });
     t.verifyCredentials(function (error, reply) {
       should.not.exist(error);
       t.id.should.equal('38895958');
@@ -33,53 +37,77 @@ describe('twitter.Twitter', function () {
   });
 
   it('calls the api to post a new tweet', function (done) {
-    t.tweet('hello', function (error, res) {
-      should.not.exist(error);
-      res.text.should.equal('hello');
+    mocktwit.setRequestListener(function (method, path, params) {
+      method.should.equal('POST');
+      path.should.equal('https://api.twitter.com/1.1/statuses/update');
+      params.should.eql({status: 'hello'});
       done();
     });
+    t.tweet('hello');
   });
 
   it('calls the api to follow users', function (done) {
-    t.follow("123456", function (error, res) {
-      should.not.exist(error);
-      res.id_str.should.equal("123456");
+    mocktwit.setRequestListener(function (method, path, params) {
+      method.should.equal('POST');
+      path.should.equal('https://api.twitter.com/1.1/friendships/create');
+      params.should.eql({"user_id": "123456"});
       done();
     });
-
+    t.follow("123456");
   });
 
   it('calls the api to unfollow users', function (done) {
-    t.unfollow("123456", function (error, res) {
-      should.not.exist(error);
-      res.id_str.should.equal("123456");
+    mocktwit.setRequestListener(function (method, path, params) {
+      method.should.equal('POST');
+      path.should.equal('https://api.twitter.com/1.1/friendships/destroy');
+      params.should.eql({"user_id": "123456"});
       done();
     });
+    t.unfollow("123456");
   });
 
   it('prepends @mention to replies', function (done) {
-    t.reply({
-      id_str: "123456",
-      user: {
-        screen_name: "MAID001"
-      }
-    }, "BEEP BEEP", function (error, res) {
-      should.not.exist(error);
-      res.text.should.equal("@MAID001 BEEP BEEP");
-      res.in_reply_to_status_id_str.should.equal("123456");
+    mocktwit.setRequestListener(function (method, path, params) {
+      method.should.equal('POST');
+      path.should.equal('https://api.twitter.com/1.1/statuses/update');
+      params.should.eql({
+        "in_reply_to_status_id": "123456",
+        "status": "@MAID001 BEEP BEEP",
+      });
       done();
     });
+    t.reply({id_str: "123456", user: {screen_name: "MAID001"}}, 'BEEP BEEP');
   });
 
   it('emits user stream events of right type', function (done) {
+    // Create stream.
+    t.connect(function () {
+      // Queue mock events.
+      mocktwit.queueMockStreamEvent('follow', {
+        'event': 'follow'
+      });
+      mocktwit.queueMockStreamEvent('unfollow', {
+        'event': 'unfollow'
+      });
+      mocktwit.queueMockStreamEvent('tweet', {
+        'in_reply_to_user_id_str': '38895958',
+        'text': '@maid009 hi'
+      });
+      mocktwit.queueMockStreamEvent('tweet', {
+        'text': 'abc123'
+      });
+      mocktwit.queueMockStreamEvent('garbage', {
+        'abc': '123'
+      });
+    });
+
+    // Wait for each event type.
     var types = ['follow', 'unfollow', 'timeline', 'reply'];
     var isDone = function () {
       if (types.length === 0) {
         done();
       }
     };
-    // Start stream and wait for each event.
-    t.connect();
     t.on('follow', function () {
       types.splice(types.indexOf('follow'), 1);
       isDone();
@@ -96,6 +124,10 @@ describe('twitter.Twitter', function () {
       types.splice(types.indexOf('reply'), 1);
       isDone();
     });
+  });
+
+  afterEach(function () {
+    mocktwit.cleanup();
   });
 
   after(function () {
