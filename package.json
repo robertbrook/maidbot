@@ -18,7 +18,8 @@
   ],
   "dependencies": {
     "json-schema": "0.2.x",
-    "twit": "1.x"
+    "twit": "1.x",
+    "chalk": "0.4.x"
   },
   "devDependencies": {
     "mocha": "1.x",
