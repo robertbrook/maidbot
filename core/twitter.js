@@ -58,10 +58,14 @@ Twitter.prototype.connect = function (callback) {
     // Create user stream and listen for events.
     self.stream = self.twit.stream('user');
     self.stream.on('follow', function (event) {
-      self.emit('follow', event);
+      if (event.target.id_str === self.id) {
+        self.emit('follow', event);
+      }
     });
     self.stream.on('unfollow', function (event) {
-      self.emit('unfollow', event);
+      if (event.target.id_str === self.id) {
+        self.emit('unfollow', event);
+      }
     });
     self.stream.on('tweet', function (tweet) {
       // Ignore retweets.

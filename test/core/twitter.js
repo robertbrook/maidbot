@@ -80,14 +80,25 @@ describe('twitter.Twitter', function () {
   });
 
   it('emits user stream events of right type', function (done) {
+    // Set fake credentials.
+    mocktwit.setMockResponse({
+      id_str: '38895958',
+      screen_name: 'maid009'
+    });
     // Create stream.
     t.connect(function () {
       // Queue mock events.
       mocktwit.queueMockStreamEvent('follow', {
-        'event': 'follow'
+        'event': 'follow',
+        'target': {
+          'id_str': '38895958'
+        }
       });
       mocktwit.queueMockStreamEvent('unfollow', {
-        'event': 'unfollow'
+        'event': 'unfollow',
+        'target': {
+          'id_str': '38895958'
+        }
       });
       mocktwit.queueMockStreamEvent('tweet', {
         'in_reply_to_user_id_str': '38895958',
