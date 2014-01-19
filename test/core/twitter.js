@@ -102,9 +102,15 @@ describe('twitter.Twitter', function () {
       });
       mocktwit.queueMockStreamEvent('tweet', {
         'in_reply_to_user_id_str': '38895958',
-        'text': '@maid009 hi'
+        'text': '@maid009 hi',
+        'user': {
+          'id_str': '123456'
+        }
       });
       mocktwit.queueMockStreamEvent('tweet', {
+        'user': {
+          'id_str': '123456'
+        },
         'text': 'abc123'
       });
       mocktwit.queueMockStreamEvent('garbage', {
