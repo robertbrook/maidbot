@@ -43,7 +43,7 @@ Maidbot.prototype.connect = function (callback) {
       this.twitter.on('reply', this.onReply.bind(this));
       // Enable random tweets.
       if (this.config.random_tweet_enable) {
-        setInterval(this.tweetRandom, this.config.random_tweet_interval * 60000);
+        setInterval(this.tweetRandom.bind(this), this.config.random_tweet_interval * 60000);
       }
       if (callback) {
         callback();
