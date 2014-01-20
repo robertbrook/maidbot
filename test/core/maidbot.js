@@ -179,7 +179,6 @@ describe('core.maidbot', function () {
     });
     m.connect(function () {
       mocktwit.setRequestListener(function (method, path, params) {
-        console.log(path);
         if (method === 'POST' && path === 'https://api.twitter.com/1.1/statuses/retweet') {
           done();
         }
