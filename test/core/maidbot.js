@@ -163,6 +163,37 @@ describe('core.maidbot', function () {
     });
   });
 
+  it('retweets timeline tweets with "retweet" type', function (done) {
+    config.tweets.push({
+      type: ['timeline', 'retweet'],
+      body: 'BEEP BEEP',
+      filters: {
+        matches: 'beep beep'
+      },
+      weight: 1
+    });
+    var m = new Maidbot(config);
+    mocktwit.setMockResponse({
+      'id_str': '12345678',
+      'screen_name': '@MAID009',
+    });
+    m.connect(function () {
+      mocktwit.setRequestListener(function (method, path, params) {
+        console.log(path);
+        if (method === 'POST' && path === 'https://api.twitter.com/1.1/statuses/retweet') {
+          done();
+        }
+      });
+      mocktwit.queueMockStreamEvent('tweet', {
+        user: {
+          screen_name: 'MAID001'
+        },
+        text: 'beep beep',
+        id_str: '123'
+      });
+    });
+  });
+
   describe('getReplyToTweet', function () {
     it('ignores tweets from ignored_users', function () {
       config.ignored_users = ["148684820"];

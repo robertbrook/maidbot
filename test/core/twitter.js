@@ -79,6 +79,18 @@ describe('twitter.Twitter', function () {
     t.reply({id_str: "123456", user: {screen_name: "MAID001"}}, 'BEEP BEEP');
   });
 
+  it('retweets', function (done) {
+    mocktwit.setRequestListener(function (method, path, params) {
+      method.should.equal('POST');
+      path.should.equal('https://api.twitter.com/1.1/statuses/retweet');
+      params.should.eql({
+        "id": "123456",
+      });
+      done();
+    });
+    t.retweet({id_str: "123456"});
+  });
+
   it('emits user stream events of right type', function (done) {
     // Set fake credentials.
     mocktwit.setMockResponse({

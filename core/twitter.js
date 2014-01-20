@@ -107,6 +107,15 @@ Twitter.prototype.reply = function (tweet, status, callback) {
 };
 
 /**
+ * Retweet a post.
+ * @param {Object} tweet Post to retweet.
+ * @param {Function} callback Callback function.
+ */
+Twitter.prototype.retweet = function (tweet, callback) {
+  this.twit.post('statuses/retweet', {id: tweet.id_str}, callback);
+};
+
+/**
  * Follows a new user.
  * @param {String} user_id User ID.
  * @param {Function} callback Callback function.
