@@ -122,6 +122,7 @@ describe('core.maidbot', function () {
           user: {
             screen_name: 'MAID001'
           },
+          entities: {},
           text: 'beep beep',
           id_str: '123'
         });
@@ -155,6 +156,7 @@ describe('core.maidbot', function () {
           user: {
             screen_name: 'MAID001'
           },
+          entities: {},
           text: 'beep beep',
           in_reply_to_user_id_str: '12345678',
           id_str: '123'
@@ -187,6 +189,7 @@ describe('core.maidbot', function () {
         user: {
           screen_name: 'MAID001'
         },
+        entities: {},
         text: 'beep beep',
         id_str: '123'
       });

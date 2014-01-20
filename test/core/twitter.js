@@ -72,11 +72,20 @@ describe('twitter.Twitter', function () {
       path.should.equal('https://api.twitter.com/1.1/statuses/update');
       params.should.eql({
         "in_reply_to_status_id": "123456",
-        "status": "@MAID001 BEEP BEEP",
+        "status": "@MAID001 @maid008 BEEP BEEP",
       });
       done();
     });
-    t.reply({id_str: "123456", user: {screen_name: "MAID001"}}, 'BEEP BEEP');
+    t.screen_name = 'maid009';
+    t.reply({
+      id_str: "123456",
+      user: {screen_name: "MAID001"},
+      entities: {
+        user_mentions: [
+          {"screen_name": "maid009"},
+          {"screen_name": "maid008"}
+      ]}
+    }, 'BEEP BEEP');
   });
 
   it('retweets', function (done) {

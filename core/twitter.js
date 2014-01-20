@@ -100,9 +100,19 @@ Twitter.prototype.tweet = function (status, callback) {
  * @param {Function} callback Callback function.
  */
 Twitter.prototype.reply = function (tweet, status, callback) {
+  var mentions = ["@" + tweet.user.screen_name];
+  // Collect all users mentioned in tweet.
+  if (tweet.entities.user_mentions && tweet.entities.user_mentions.length > 0) {
+    for (var i in tweet.entities.user_mentions) {
+      if (tweet.entities.user_mentions[i].screen_name !== tweet.user.screen_name && tweet.entities.user_mentions[i].screen_name !== this.screen_name) {
+        mentions.push("@" + tweet.entities.user_mentions[i].screen_name);
+      }
+    }
+  }
+
   this.twit.post('statuses/update', {
     in_reply_to_status_id: tweet.id_str,
-    status: '@' + tweet.user.screen_name + ' ' + status
+    status: mentions.join(' ') + ' ' + status
   }, callback);
 };
 
