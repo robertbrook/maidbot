@@ -68,8 +68,8 @@ Twitter.prototype.connect = function (callback) {
       }
     });
     self.stream.on('tweet', function (tweet) {
-      // Ignore own tweets.
-      if (tweet.user.id_str !== self.id) {
+      // Ignore own tweets and retweets.
+      if (tweet.user.id_str !== self.id && !tweet.retweeted_status) {
         // Check if tweet is a reply.
         if (tweet.in_reply_to_user_id_str === self.id) {
           self.emit('reply', tweet);
