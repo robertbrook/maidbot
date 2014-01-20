@@ -150,5 +150,6 @@ describe('twitter.Twitter', function () {
   after(function () {
     // Disable mocks.
     mockery.disable();
+    mockery.deregisterAll();
   });
 });
