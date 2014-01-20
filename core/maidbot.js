@@ -45,7 +45,9 @@ Maidbot.prototype.connect = function (callback) {
       if (this.config.random_tweet_enable) {
         setInterval(this.tweetRandom, this.config.random_tweet_interval * 60000);
       }
-      callback();
+      if (callback) {
+        callback();
+      }
     }
   }.bind(this));
 };
