@@ -112,7 +112,6 @@ Maidbot.prototype.onTimeline = function (event) {
  * @param {Object} event Reply event.
  */
 Maidbot.prototype.onReply = function (event) {
-  console.log(event);
   this.log("@" + event.user.screen_name + " " + event.text);
   var reply = this.getReplyToTweet('reply', event);
   if (reply !== null) {
