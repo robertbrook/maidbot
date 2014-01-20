@@ -1,5 +1,4 @@
-Twitter bot inspired by [twittbot.net](https://twittbot.net/). This project is currently undergoing a rewrite. If you're looking to actually run this thing, take a look at the [v1.0.5](https://github.com/vomitcuddle/maidbot/tree/v1.0.5) tag.
-
+Twitter bot inspired by [twittbot.net](https://twittbot.net/).
 [![Build Status](https://travis-ci.org/vomitcuddle/maidbot.png)](https://travis-ci.org/vomitcuddle/maidbot)
 [![NPM version](https://badge.fury.io/js/maidbot.png)](http://badge.fury.io/js/maidbot)
 [![Dependency Status](https://gemnasium.com/vomitcuddle/maidbot.png)](https://gemnasium.com/vomitcuddle/maidbot)
@@ -17,7 +16,7 @@ $ maidbot config_file.json
 
 ## Configuration
 Maidbot uses JSON files for configuration.
-There's an example configuration file under `example/maidbot.json` and a JSON schema under `maidbot/config/schema.js`.
+There's an example configuration file under `test/examples/maidbot.json` and a JSON schema under `core/schema.js`.
 
 #### Example configuration
 ```javascript
