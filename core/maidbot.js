@@ -36,7 +36,7 @@ Maidbot.prototype.connect = function (callback) {
       console.error(chalk.red(error));
       callback(error);
     } else {
-      this.log("Logged in as @" + this.twitter.screen_name + ".");
+      this.log(chalk.green("Logged in as @" + this.twitter.screen_name + "."));
       this.twitter.on('follow', this.onFollow.bind(this));
       this.twitter.on('unfollow', this.onUnfollow.bind(this));
       this.twitter.on('timeline', this.onTimeline.bind(this));
@@ -57,7 +57,7 @@ Maidbot.prototype.connect = function (callback) {
  * @param {Object} event Follow event.
  */
 Maidbot.prototype.onFollow = function (event) {
-  this.log("Followed by @" + event.source.screen_name + ".");
+  this.log(chalk.magenta("Followed by @" + event.source.screen_name + "."));
   // Follow back.
   if (this.config.auto_follow_back && !utils.isUserIgnored(event.source.id_str, this.config.ignored_users)) {
     this.log("Following @" + event.source.screen_name + "...");
@@ -65,7 +65,7 @@ Maidbot.prototype.onFollow = function (event) {
       if (err) {
         console.error(chalk.red(err));
       } else {
-        this.log("Followed @" + event.source.screen_name + ".");
+        this.log(chalk.green("Followed @" + event.source.screen_name + "."));
       }
     }.bind(this));
   }
@@ -76,7 +76,7 @@ Maidbot.prototype.onFollow = function (event) {
  * @param {Object} event Unfollow event.
  */
 Maidbot.prototype.onUnfollow = function (event) {
-  this.log("Unfollowed by @" + event.source.screen_name + ".");
+  this.log(chalk.magenta("Unfollowed by @" + event.source.screen_name + "."));
   // Unfollow back.
   if (this.config.auto_follow_back) {
     this.log("Unfollowing @" + event.source.screen_name + "...");
@@ -84,7 +84,7 @@ Maidbot.prototype.onUnfollow = function (event) {
       if (err) {
         console.error(chalk.red(err));
       } else {
-        this.log("Unfollowed @" + event.source.screen_name + ".");
+        this.log(chalk.green("Unfollowed @" + event.source.screen_name + "."));
       }
     }.bind(this));
   }
@@ -95,10 +95,10 @@ Maidbot.prototype.onUnfollow = function (event) {
  * @param {Object} event Timeline event.
  */
 Maidbot.prototype.onTimeline = function (event) {
-  this.log("@" + event.user.screen_name + " " + event.text);
+  this.log(chalk.grey("@" + event.user.screen_name + " " + event.text));
   var reply = this.getReplyToTweet('timeline', event);
   if (reply !== null) {
-    this.log("Replying @" + event.user.screen_name + " " + reply.body + "...");
+    this.log("Replying @" + event.user.screen_name + " " + reply.body);
     this.twitter.reply(event, reply.body, function (err) {
       if (err) {
         console.error(chalk.red(err));
@@ -112,10 +112,10 @@ Maidbot.prototype.onTimeline = function (event) {
  * @param {Object} event Reply event.
  */
 Maidbot.prototype.onReply = function (event) {
-  this.log("@" + event.user.screen_name + " " + event.text);
+  this.log(chalk.yellow("@" + event.user.screen_name + " " + event.text));
   var reply = this.getReplyToTweet('reply', event);
   if (reply !== null) {
-    this.log("Replying @" + event.user.screen_name + " " + reply.body + "...");
+    this.log("Replying @" + event.user.screen_name + " " + reply.body);
     this.twitter.reply(event, reply.body, function (err) {
       if (err) {
         console.error(chalk.red(err));
@@ -130,7 +130,7 @@ Maidbot.prototype.onReply = function (event) {
 Maidbot.prototype.tweetRandom = function () {
   var tweet = utils.getRandomTweet(this.config.tweets);
   if (tweet !== null) {
-    this.log("Tweeting " + tweet.body + "...");
+    this.log("Tweeting " + tweet.body);
     this.twitter.tweet(tweet.body, function (err) {
       if (err) {
         console.error(err);
