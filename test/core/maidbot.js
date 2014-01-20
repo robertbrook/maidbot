@@ -181,7 +181,7 @@ describe('core.maidbot', function () {
     });
     m.connect(function () {
       mocktwit.setRequestListener(function (method, path, params) {
-        if (method === 'POST' && path === 'https://api.twitter.com/1.1/statuses/retweet') {
+        if (method === 'POST' && path === 'https://api.twitter.com/1.1/statuses/retweet/123') {
           done();
         }
       });

@@ -122,7 +122,7 @@ Twitter.prototype.reply = function (tweet, status, callback) {
  * @param {Function} callback Callback function.
  */
 Twitter.prototype.retweet = function (tweet, callback) {
-  this.twit.post('statuses/retweet', {id: tweet.id_str}, callback);
+  this.twit.post('statuses/retweet/' + tweet.id_str, callback);
 };
 
 /**

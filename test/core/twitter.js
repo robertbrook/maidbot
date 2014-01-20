@@ -91,10 +91,7 @@ describe('twitter.Twitter', function () {
   it('retweets', function (done) {
     mocktwit.setRequestListener(function (method, path, params) {
       method.should.equal('POST');
-      path.should.equal('https://api.twitter.com/1.1/statuses/retweet');
-      params.should.eql({
-        "id": "123456",
-      });
+      path.should.equal('https://api.twitter.com/1.1/statuses/retweet/123456');
       done();
     });
     t.retweet({id_str: "123456"});
