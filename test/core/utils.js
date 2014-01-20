@@ -148,4 +148,20 @@ describe('core.utils', function () {
       }])).be.null;
     });
   });
+
+  describe('getRandomTweet', function () {
+    it('returns tweets of correct type', function () {
+      should(utils.getRandomTweet([{
+        type: ['random']
+      }])).be.an.Object;
+      should(utils.getRandomTweet([{
+        type: ['random']
+      }])).be.null;
+    });
+    it('returns null when no tweet is found', function () {
+      should(utils.getRandomTweet([{
+        type: ['random']
+      }])).be.null;
+    });
+  });
 });

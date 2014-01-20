@@ -79,7 +79,7 @@ exports.filterAndGetTweet = function (tweet, type, tweets, caseInsensitive) {
 /**
  * Finds a random response without using filters.
  * Takes only tweets with no into account
- * @param {Object} tweets Array of tweets.
+ * @param {Array} tweets Array of tweets.
  * @param {String} type Event type. (Optional, defaults to reply)
  * @returns {Object} Random response.
  */
@@ -104,6 +104,20 @@ exports.getRandomReply = function (tweets, type) {
   if (tweets.length > 0) {
     // Return random tweet with highest weight.
     return getRandomElementFromArray(filterTweetsByWeight(tweets, highestWeight));
+  }
+  return null;
+};
+
+/**
+ * Get random tweet to post at fixed interval. (random_tweet_enable).
+ * @param {Array} tweets Array of tweets.
+ */
+exports.getRandomTweet = function (tweets) {
+  tweets = tweets.filter(function (t) {
+    return t.type.indexOf('random') > -1;
+  });
+  if (tweets.length > 0) {
+    return getRandomElementFromArray(tweets);
   }
   return null;
 };

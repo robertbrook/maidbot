@@ -36,6 +36,132 @@ describe('core.maidbot', function () {
     };
   });
 
+  describe('bot', function () {
+    it('follows users back when auto_follow_back is enabled', function (done) {
+      config.auto_follow_back = true;
+      var m = new Maidbot(config);
+      mocktwit.setMockResponse({
+        'id_str': '12345678',
+        'screen_name': '@MAID009'
+      });
+      m.connect(function () {
+        mocktwit.setRequestListener(function (method, path, params) {
+          if (method === 'POST') {
+            path.should.equal('https://api.twitter.com/1.1/friendships/create');
+            params.should.eql({"user_id": "123456"});
+            done();
+          }
+        });
+        mocktwit.queueMockStreamEvent('follow', {
+          'event': 'follow',
+          'target': {
+            'id_str': '12345678'
+          },
+          'source': {
+            'id_str': '123456',
+            'screen_name': 'MAID001'
+          }
+        });
+      });
+    });
+
+    it('unfollows users back when auto_follow_back is enabled', function (done) {
+      config.auto_follow_back = true;
+      var m = new Maidbot(config);
+      mocktwit.setMockResponse({
+        'id_str': '12345678',
+        'screen_name': '@MAID009'
+      });
+      m.connect(function () {
+        mocktwit.setRequestListener(function (method, path, params) {
+          if (method === 'POST') {
+            path.should.equal('https://api.twitter.com/1.1/friendships/destroy');
+            params.should.eql({"user_id": "123456"});
+            done();
+          }
+        });
+        mocktwit.queueMockStreamEvent('unfollow', {
+          'event': 'unfollow',
+          'target': {
+            'id_str': '12345678'
+          },
+          'source': {
+            'id_str': '123456',
+            'screen_name': 'MAID001'
+          }
+        });
+      });
+    });
+
+    it('responds to timeline events', function (done) {
+      config.tweets.push({
+        type: ['timeline'],
+        body: 'BEEP BEEP',
+        filters: {
+          matches: 'beep beep'
+        },
+        weight: 1
+      });
+      var m = new Maidbot(config);
+      mocktwit.setMockResponse({
+        'id_str': '12345678',
+        'screen_name': '@MAID009',
+      });
+      m.connect(function () {
+        mocktwit.setRequestListener(function (method, path, params) {
+          if (method === 'POST') {
+            path.should.equal('https://api.twitter.com/1.1/statuses/update');
+            params.should.eql({
+              "status": "@MAID001 BEEP BEEP",
+              "in_reply_to_status_id": "123"
+            });
+            done();
+          }
+        });
+        mocktwit.queueMockStreamEvent('timeline', {
+          user: {
+            screen_name: 'MAID001'
+          },
+          text: 'beep beep',
+          id_str: '123'
+        });
+      });
+    });
+
+    it('responds to reply events', function (done) {
+      config.tweets.push({
+        type: ['reply'],
+        body: 'BEEP BEEP',
+        filters: {},
+        weight: 1
+      });
+      var m = new Maidbot(config);
+      mocktwit.setMockResponse({
+        'id_str': '12345678',
+        'screen_name': '@MAID009',
+      });
+      m.connect(function () {
+        mocktwit.setRequestListener(function (method, path, params) {
+          if (method === 'POST') {
+            path.should.equal('https://api.twitter.com/1.1/statuses/update');
+            params.should.eql({
+              "status": "@MAID001 BEEP BEEP",
+              "in_reply_to_status_id": "123"
+            });
+            done();
+          }
+        });
+        mocktwit.queueMockStreamEvent('reply', {
+          user: {
+            screen_name: 'MAID001'
+          },
+          text: 'beep beep',
+          id_str: '123'
+        });
+      });
+    });
+  });
+
   describe('getReplyToTweet', function () {
     it('ignores tweets from ignored_users', function () {
       config.ignored_users = ["148684820"];

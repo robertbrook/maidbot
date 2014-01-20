@@ -8,19 +8,122 @@ var utils = require('./utils');
 /**
  * Create a new instance of Maidbot.
  * @param {Object} config Parsed configuration file.
- * @param {Number} logLevel Log verbosity level (0-3)
  */
-var Maidbot = function (config, enableLogging) {
+var Maidbot = function (config) {
   this.config = config;
   this.twitter = new Twitter(config);
-  this.log = enableLogging === true;
 };
 
 /**
  * Connect to twitter streaming API.
+ * @param {Function} callback Callback function
  */
-Maidbot.prototype.connect = function () {
-  this.stream = this.twitter.connect();
+Maidbot.prototype.connect = function (callback) {
+  console.log("Authenticating...");
+  this.twitter.connect(function (error) {
+    if (error) {
+      console.error(error);
+      callback(error);
+    } else {
+      console.log("Logged in as @" + this.twitter.screen_name + ".");
+      this.twitter.stream.on('follow', this.onFollow.bind(this));
+      this.twitter.stream.on('unfollow', this.onUnfollow.bind(this));
+      this.twitter.stream.on('timeline', this.onTimeline.bind(this));
+      this.twitter.stream.on('reply', this.onReply.bind(this));
+      // Enable random tweets.
+      if (this.config.random_tweet_enable) {
+        setInterval(this.tweetRandom, this.config.random_tweet_interval * 60000);
+      }
+      callback();
+    }
+  }.bind(this));
+};
+
+/**
+ * Handle follow events.
+ * @param {Object} event Follow event.
+ */
+Maidbot.prototype.onFollow = function (event) {
+  console.log("Followed by @" + event.source.screen_name + ".");
+  // Follow back.
+  if (this.config.auto_follow_back && !utils.isUserIgnored(event.source.id_str, this.config.ignored_users)) {
+    console.log("Following @" + event.source.screen_name + "...");
+    this.twitter.follow(event.source.id_str, function (err, res) {
+      if (err) {
+        console.error(err);
+      } else {
+        console.log("Followed @" + event.source.screen_name + ".");
+      }
+    });
+  }
+};
+
+/**
+ * Handle unfollow events.
+ * @param {Object} event Unfollow event.
+ */
+Maidbot.prototype.onUnfollow = function (event) {
+  console.log("Unfollowed by @" + event.source.screen_name + ".");
+  // Unfollow back.
+  if (this.config.auto_follow_back) {
+    console.log("Unfollowing @" + event.source.screen_name + "...");
+    this.twitter.unfollow(event.source.id_str, function (err) {
+      if (err) {
+        console.error(err);
+      } else {
+        console.log("Unfollowed @" + event.source.screen_name + ".");
+      }
+    });
+  }
+};
+
+/**
+ * Handle timeline events.
+ * @param {Object} event Timeline event.
+ */
+Maidbot.prototype.onTimeline = function (event) {
+  console.log("@" + event.user.screen_name + " " + event.text);
+  var reply = this.getReplyToTweet('timeline', event);
+  if (reply !== null) {
+    console.log("Replying @" + event.user.screen_name + " " + reply.body + "...");
+    this.twitter.reply(event, reply.body, function (err) {
+      if (err) {
+        console.error(err);
+      }
+    });
+  }
+};
+
+/**
+ * Handle reply events.
+ * @param {Object} event Reply event.
+ */
+Maidbot.prototype.onReply = function (event) {
+  console.log("@" + event.user.screen_name + " " + event.text);
+  var reply = this.getReplyToTweet('reply', event);
+  if (reply !== null) {
+    console.log("Replying @" + event.user.screen_name + " " + reply.body + "...");
+    this.twitter.reply(event, reply.body, function (err) {
+      if (err) {
+        console.error(err);
+      }
+    });
+  }
+};
+
+/**
+ * Post periodical random tweets.
+ */
+Maidbot.prototype.tweetRandom = function () {
+  var tweet = utils.getRandomTweet(this.config.tweets);
+  if (tweet !== null) {
+    console.log("Tweeting " + tweet.body + "...");
+    this.twitter.tweet(tweet.body, function (err) {
+      if (err) {
+        console.error(err);
+      }
+    });
+  }
 };
 
 /**
