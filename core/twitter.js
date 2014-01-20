@@ -58,12 +58,12 @@ Twitter.prototype.connect = function (callback) {
     // Create user stream and listen for events.
     self.stream = self.twit.stream('user');
     self.stream.on('follow', function (event) {
-      if (event.target.id_str === self.id) {
+      if (event.target.id_str === self.id && event.source.id_str !== self.id) {
         self.emit('follow', event);
       }
     });
     self.stream.on('unfollow', function (event) {
-      if (event.target.id_str === self.id) {
+      if (event.target.id_str === self.id && event.source.id_str !== self.id) {
         self.emit('unfollow', event);
       }
     });

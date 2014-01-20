@@ -37,10 +37,10 @@ Maidbot.prototype.connect = function (callback) {
       callback(error);
     } else {
       this.log("Logged in as @" + this.twitter.screen_name + ".");
-      this.twitter.stream.on('follow', this.onFollow.bind(this));
-      this.twitter.stream.on('unfollow', this.onUnfollow.bind(this));
-      this.twitter.stream.on('timeline', this.onTimeline.bind(this));
-      this.twitter.stream.on('reply', this.onReply.bind(this));
+      this.twitter.on('follow', this.onFollow.bind(this));
+      this.twitter.on('unfollow', this.onUnfollow.bind(this));
+      this.twitter.on('timeline', this.onTimeline.bind(this));
+      this.twitter.on('reply', this.onReply.bind(this));
       // Enable random tweets.
       if (this.config.random_tweet_enable) {
         setInterval(this.tweetRandom, this.config.random_tweet_interval * 60000);
@@ -112,6 +112,7 @@ Maidbot.prototype.onTimeline = function (event) {
  * @param {Object} event Reply event.
  */
 Maidbot.prototype.onReply = function (event) {
+  console.log(event);
   this.log("@" + event.user.screen_name + " " + event.text);
   var reply = this.getReplyToTweet('reply', event);
   if (reply !== null) {

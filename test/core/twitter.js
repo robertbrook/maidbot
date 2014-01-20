@@ -92,12 +92,18 @@ describe('twitter.Twitter', function () {
         'event': 'follow',
         'target': {
           'id_str': '38895958'
+        },
+        'source': {
+          'id_str': '123456'
         }
       });
       mocktwit.queueMockStreamEvent('unfollow', {
         'event': 'unfollow',
         'target': {
           'id_str': '38895958'
+        },
+        'source': {
+          'id_str': '123456'
         }
       });
       mocktwit.queueMockStreamEvent('tweet', {

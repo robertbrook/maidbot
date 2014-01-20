@@ -118,7 +118,7 @@ describe('core.maidbot', function () {
             done();
           }
         });
-        mocktwit.queueMockStreamEvent('timeline', {
+        mocktwit.queueMockStreamEvent('tweet', {
           user: {
             screen_name: 'MAID001'
           },
@@ -151,11 +151,12 @@ describe('core.maidbot', function () {
             done();
           }
         });
-        mocktwit.queueMockStreamEvent('reply', {
+        mocktwit.queueMockStreamEvent('tweet', {
           user: {
             screen_name: 'MAID001'
           },
           text: 'beep beep',
+          in_reply_to_user_id_str: '12345678',
           id_str: '123'
         });
       });
