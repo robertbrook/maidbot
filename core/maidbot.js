@@ -104,7 +104,7 @@ Maidbot.prototype.onTimeline = function (event) {
         console.error(chalk.red(err));
       }
     });
-    if (reply.type.indexOf('retweet') > -1) {
+    if (reply.type.indexOf('retweet') > -1 && !event.protected) {
       console.log("Retweeting @" + event.user.screen_name + ' ' + event.text);
       this.twitter.retweet(event, function (err) {
         if (err) {
