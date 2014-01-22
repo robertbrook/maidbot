@@ -127,6 +127,9 @@ describe('twitter.Twitter', function () {
       mocktwit.queueMockStreamEvent('tweet', {
         'in_reply_to_user_id_str': '38895958',
         'text': '@maid009 hi',
+        'entities': {
+          'user_mentions': []
+        },
         'user': {
           'id_str': '123456'
         }
@@ -134,6 +137,9 @@ describe('twitter.Twitter', function () {
       mocktwit.queueMockStreamEvent('tweet', {
         'user': {
           'id_str': '123456'
+        },
+        'entities': {
+          'user_mentions': []
         },
         'text': 'abc123'
       });
