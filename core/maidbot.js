@@ -133,6 +133,23 @@ Maidbot.prototype.onReply = function (event) {
 };
 
 /**
+ * Handle disconnect events.
+ * @param {Object} event Disconnect event.
+ */
+Maidbot.prototype.onDisconnect = function (event) {
+  console.error(chalk.white("Twitter stream interrupted: ") + chalk.red(event));
+  if (this.config.auto_reconnect) {
+    this.log("Reconnecting...");
+    this.connect(function (error) {
+      console.error(chalk.red(error));
+      process.exit(1);
+    });
+  } else {
+    process.exit(1);
+  }
+};
+
+/**
  * Post periodical random tweets.
  */
 Maidbot.prototype.tweetRandom = function () {

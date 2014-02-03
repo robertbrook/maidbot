@@ -167,6 +167,23 @@ describe('core.maidbot', function () {
     });
   });
 
+  it('attempts to reconnect after connection to stream api is lost', function (done) {
+    config.auto_reconnect = true;
+    var m = new Maidbot(config);
+    mocktwit.setMockResponse({
+      'id_str': '12345678',
+      'screen_name': '@MAID009',
+    });
+    m.connect(function () {
+      mocktwit.setRequestListener(function (method, path, params) {
+        method.should.equal('GET');
+        path.should.equal('https://api.twitter.com/1.1/account/verify_credentials');
+        done();
+      });
+      mocktwit.queueMockStreamEvent('disconnect', {});
+    });
+  });
+
   it('retweets timeline tweets with "retweet" type', function (done) {
     config.tweets.push({
       type: ['timeline', 'retweet'],
