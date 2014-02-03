@@ -32,6 +32,7 @@ describe('core.maidbot', function () {
       random_tweet_interval: 0,
       filters_case_insensitive: false,
       tweets: [],
+      follower_greetings: [],
       ignored_users: []
     };
   });
@@ -49,6 +50,36 @@ describe('core.maidbot', function () {
           if (method === 'POST') {
             path.should.equal('https://api.twitter.com/1.1/friendships/create');
             params.should.eql({"user_id": "123456"});
+            done();
+          }
+        });
+        mocktwit.queueMockStreamEvent('follow', {
+          'event': 'follow',
+          'target': {
+            'id_str': '12345678'
+          },
+          'source': {
+            'id_str': '123456',
+            'screen_name': 'MAID001'
+          }
+        });
+      });
+    });
+
+    it('greets new followers when follower_greetings are defined', function (done) {
+      config.follower_greetings = ["Thank you for following me!"];
+      var m = new Maidbot(config);
+      mocktwit.setMockResponse({
+        'id_str': '12345678',
+        'screen_name': '@MAID009'
+      });
+      m.connect(function () {
+        mocktwit.setRequestListener(function (method, path, params) {
+          if (method === 'POST') {
+            path.should.equal('https://api.twitter.com/1.1/statuses/update');
+            params.should.eql({
+              "status": "@MAID001 Thank you for following me!",
+            });
             done();
           }
         });

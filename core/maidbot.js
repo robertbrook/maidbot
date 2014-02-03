@@ -69,6 +69,14 @@ Maidbot.prototype.onFollow = function (event) {
       }
     }.bind(this));
   }
+  // Greet new followers.
+  console.log(this.config);
+  if (this.config.follower_greetings.length > 0) {
+    // Pick random greeting.
+    var greeting = this.config.follower_greetings[Math.floor(
+      Math.random()*this.config.follower_greetings.length)];
+    this.twitter.tweet('@' + event.source.screen_name + ' ' + greeting);
+  }
 };
 
 /**
