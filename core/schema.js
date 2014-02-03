@@ -110,6 +110,14 @@ module.exports = {
       "type": "boolean",
       "default": true
     },
+    "follower_greetings": {
+      "description": "Greetings sent to new followers",
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "string"
+      }
+    },
     "tweets": {
       "description": "Array of Tweets",
       "type": "array",

@@ -60,6 +60,11 @@ describe("config JSON schema", function () {
       assert.strictEqual(config.filters_case_insensitive, true);
     });
 
+    it("follower_greetings", function () {
+      var validation = jsonschema.validate(config, schema);
+      assert.deepEqual(config.follower_greetings, []);
+    });
+
     it("ignored_users", function () {
       var validation = jsonschema.validate(config, schema);
       assert.deepEqual(config.ignored_users, []);
@@ -248,6 +253,36 @@ describe("config JSON schema", function () {
       assert.deepEqual(validation.errors, [
         { "property": "filters_case_insensitive",
           "message": "number value found, but a boolean is required" }
+      ]);
+    });
+
+    it("follower_greetings", function () {
+      var validation;
+      // Setup.
+      config.follower_greetings = 1;
+      // Validation.
+      validation = jsonschema.validate(config, schema);
+      // Asserts.
+      assert(!validation.valid, "should not validate");
+      assert.strictEqual(validation.errors.length, 1, "unexpected errors");
+      assert.deepEqual(validation.errors, [
+        { "property": "follower_greetings",
+          "message": "number value found, but a array is required" }
+      ]);
+    });
+
+    it("follower_greetings.properties", function () {
+      var validation;
+      // Setup.
+      config.follower_greetings = [1];
+      // Validation.
+      validation = jsonschema.validate(config, schema);
+      // Asserts.
+      assert(!validation.valid, "should not validate");
+      assert.strictEqual(validation.errors.length, 1, "unexpected errors");
+      assert.deepEqual(validation.errors, [
+        { "property": "follower_greetings[0]",
+          "message": "number value found, but a string is required" }
       ]);
     });
 
