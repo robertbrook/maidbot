@@ -89,6 +89,11 @@ module.exports = {
       "type": "boolean",
       "default": true
     },
+    "auto_reconnect": {
+      "description": "Automatically reconnect to the Twitter streaming API",
+      "type": "boolean",
+      "default": false
+    },
     "random_tweet_enable": {
       "description": "Enables periodical random tweets.",
       "type": "boolean",
@@ -116,7 +121,7 @@ module.exports = {
       "description": "IDs of users to ignore",
       "type": "array",
       "default": [],
-      "items": { 
+      "items": {
         "type": "string",
         "pattern": "^[0-9]+$"
       }

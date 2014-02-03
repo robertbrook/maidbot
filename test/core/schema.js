@@ -40,6 +40,11 @@ describe("config JSON schema", function () {
       assert.strictEqual(config.auto_follow_back, true);
     });
 
+    it("auto_reconnect", function () {
+      var validation = jsonschema.validate(config, schema);
+      assert.strictEqual(config.auto_reconnect, false);
+    });
+
     it("random_tweet_enable", function () {
       var validation = jsonschema.validate(config, schema);
       assert.strictEqual(config.random_tweet_enable, true);
@@ -182,6 +187,21 @@ describe("config JSON schema", function () {
       assert.strictEqual(validation.errors.length, 1, "unexpected errors");
       assert.deepEqual(validation.errors, [
         { "property": "auto_follow_back",
+          "message": "number value found, but a boolean is required" }
+      ]);
+    });
+
+    it("auto_follow_back", function () {
+      var validation;
+      // Setup.
+      config.auto_reconnect = 1;
+      // Validation.
+      validation = jsonschema.validate(config, schema);
+      // Asserts.
+      assert(!validation.valid, "should not validate");
+      assert.strictEqual(validation.errors.length, 1, "unexpected errors");
+      assert.deepEqual(validation.errors, [
+        { "property": "auto_reconnect",
           "message": "number value found, but a boolean is required" }
       ]);
     });
