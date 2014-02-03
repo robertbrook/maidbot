@@ -146,10 +146,11 @@ describe('twitter.Twitter', function () {
       mocktwit.queueMockStreamEvent('garbage', {
         'abc': '123'
       });
+      mocktwit.queueMockStreamEvent('disconnect', {});
     });
 
     // Wait for each event type.
-    var types = ['follow', 'unfollow', 'timeline', 'reply'];
+    var types = ['follow', 'unfollow', 'timeline', 'reply', 'disconnect'];
     var isDone = function () {
       if (types.length === 0) {
         done();
@@ -169,6 +170,10 @@ describe('twitter.Twitter', function () {
     });
     t.on('reply', function () {
       types.splice(types.indexOf('reply'), 1);
+      isDone();
+    });
+    t.on('disconnect', function () {
+      types.splice(types.indexOf('disconnect'), 1);
       isDone();
     });
   });

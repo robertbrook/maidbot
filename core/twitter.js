@@ -79,6 +79,10 @@ Twitter.prototype.connect = function (callback) {
         }
       }
     });
+    self.stream.on('disconnect', function (msg) {
+      // Emit disconnect event.
+      self.emit('disconnect', msg);
+    });
     if (callback) {
       callback();
     }
