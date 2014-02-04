@@ -42,7 +42,7 @@ describe("config JSON schema", function () {
 
     it("auto_reconnect", function () {
       var validation = jsonschema.validate(config, schema);
-      assert.equal(config.auto_reconnect, false);
+      assert(!config.auto_reconnect);
     });
 
     it("random_tweet_enable", function () {
