@@ -70,8 +70,7 @@ Maidbot.prototype.onFollow = function (event) {
     }.bind(this));
   }
   // Greet new followers.
-  console.log(this.config);
-  if (this.config.follower_greetings.length > 0) {
+  if (this.config.follower_greetings.length > 0 && !utils.isUserIgnored(event.source.id_str, this.config.ignored_users)) {
     // Pick random greeting.
     var greeting = this.config.follower_greetings[Math.floor(
       Math.random()*this.config.follower_greetings.length)];
