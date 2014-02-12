@@ -5,77 +5,88 @@
     "access_token": "",
     "access_token_secret": ""
   },
-  
+
   "auto_follow_back": true,
   "random_tweet_enable": true,
   "random_tweet_interval": 60,
   "filters_case_insensitive": true,
+  "follower_greetings": ["Thank you for following me. *bows*"],
 
   "tweets": [
     { "body": "BEEP BEEP",
       "type": ["random", "reply"]
-    },
-    { "body": "I am glad to serve you.",
-      "type": ["random"]
-    },
-    { "body": "I am currently awaiting instruction.",
-      "type": ["random"]
-    },
-    { "body": "...",
-      "type": ["random"]
-    },
-    { "body": "I am here to serve you.",
-      "type": ["random"]
-    },
-    { "body": "I will attempt to fulfill any request given to me.",
-      "type": ["random"]
-    },
-    { "body": "I am operating at full capacity.",
-      "type": ["random"]
-    },
-    { "body": "I will do my job to the best of my ability.",
-      "type": ["random"]
-    },
-    { "body": "I am not designed to fight.",
-      "type": ["random"]
-    },
-    { "body": "The goats on the farm are doing well.",
-      "type": ["random"]
-    },
-    { "body": "I shall make you something to eat.",
-      "type": ["timeline"],
-      "filters": {"regexp": "i'?m hungry"}
-    },
-    { "body": "I shall make you something to eat.",
-      "type": ["reply"],
-      "filters": {"regexp": "hungry|make.+(?:food|eat)"}
-    },
-    { "body": "Good night.",
-      "type": ["timeline", "reply"],
-      "filters": {"matches": "good night",
-                  "matches": "nini"}
-    },
-    { "body": "Thank you for following me *bow*",
-      "type": ["follower"]
-    },
-    { "body": "I shall begin cleaning right away.",
-      "type": ["reply"],
-      "filters": {"matches": "clean"}
-    },
-    { "body": "I shall make you some tea.",
-      "type": ["timeline", "reply"],
-      "filters": {"regexp": "thirsty|make.+(?:tea)"}
-    },
-    { "body": "Good morning.",
-      "type": ["timeline"],
-      "filters": {"matches": "good morning"}
-    },
-    { "body": "BEEP BEEP",
-      "type": ["timeline"],
-      "filters": {"matches": "beep"}
-    }
+  },
+  { "body": "I'll make you the culprit.",
+    "type": ["random"]
+  },
+  { "body": "I am glad to serve you.",
+    "type": ["random"]
+  },
+  { "body": "I am currently awaiting instruction.",
+    "type": ["random"]
+  },
+  { "body": "...",
+    "type": ["random"]
+  },
+  { "body": "I am here to serve you.",
+    "type": ["random"]
+  },
+  { "body": "I will attempt to fulfill any request given to me.",
+    "type": ["random"]
+  },
+  { "body": "I am operating at full capacity.",
+    "type": ["random"]
+  },
+  { "body": "I will do my job to the best of my ability.",
+    "type": ["random"]
+  },
+  { "body": "I am not designed to fight.",
+    "type": ["random"]
+  },
+  { "body": "The goats on the farm are doing well.",
+    "type": ["random"]
+  },
+  { "body": "あらら",
+    "type": ["random"]
+  },
+  { "body": "I shall make you something to eat.",
+    "type": ["timeline"],
+    "filters": {"regexp": "i'?m hungry"}
+  },
+  { "body": "I shall make you something to eat.",
+    "type": ["reply"],
+    "filters": {"regexp": "\\bhungry\\b|\\bfood\\b|\\beat\\b"}
+  },
+  { "body": "Good night.",
+    "type": ["timeline", "reply"],
+    "filters": {"regexp": "good night|\\bnini\\b"}
+  },
+  { "body": "Thank you for following me *bow*",
+    "type": ["follower"]
+  },
+  { "body": "I shall begin cleaning right away.",
+    "type": ["reply"],
+    "filters": {"matches": "clean"}
+  },
+  { "body": "I shall make you some tea.",
+    "type": ["timeline", "reply"],
+    "filters": {"regexp": "\\bthirsty\\b|\\bmake\\b.+(?:\\btea\\b)"}
+  },
+  { "body": "Good morning.",
+    "type": ["timeline"],
+    "filters": {"matches": "good morning"}
+  },
+  { "body": "BEEP BEEP",
+    "type": ["timeline", "reply", "retweet"],
+    "filters": {"matches": "beep"}
+  },
+  { "body": "I shall give you a smooch.",
+    "type": ["reply"],
+    "filters": {"regexp": "kiss|smooch"}
+  }
 
   ],
 
   "ignored_users": ["148684820"]
 }
+
