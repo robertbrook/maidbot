@@ -61,7 +61,7 @@ Maidbot.prototype.onFollow = function (event) {
   // Follow back.
   if (this.config.auto_follow_back && !utils.isUserIgnored(event.source.id_str, this.config.ignored_users)) {
     this.log("Following @" + event.source.screen_name + "...");
-    this.twitter.follow(event.source.id_str, function (err, res) {
+    this.twitter.follow(event.source.id_str, function (err) {
       if (err) {
         console.error(chalk.red(err));
       } else {
