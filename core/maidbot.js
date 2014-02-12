@@ -34,22 +34,33 @@ Maidbot.prototype.connect = function (callback) {
   this.twitter.connect(function (error) {
     if (error) {
       console.error(chalk.red(error));
-      callback(error);
-    } else {
-      this.log(chalk.green("Logged in as @" + this.twitter.screen_name + "."));
-      this.twitter.on('follow', this.onFollow.bind(this));
-      this.twitter.on('unfollow', this.onUnfollow.bind(this));
-      this.twitter.on('timeline', this.onTweet.bind(this, false));
-      this.twitter.on('reply', this.onTweet.bind(this, true));
-      // Enable random tweets.
-      if (this.config.random_tweet_enable) {
-        setInterval(this.tweetRandom.bind(this), this.config.random_tweet_interval * 60000);
-      }
       if (callback) {
-        callback();
+        callback(error);
       }
+    } else {
+      this.onConnect(callback);
     }
   }.bind(this));
+};
+
+/**
+ * Setup event callbacks after connection to twitter API has been established.
+ * @param {Function} callback Callback function
+ */
+Maidbot.prototype.onConnect = function (callback) {
+  this.log(chalk.green("Logged in as @" + this.twitter.screen_name + "."));
+  this.twitter.on('follow', this.onFollow.bind(this));
+  this.twitter.on('unfollow', this.onUnfollow.bind(this));
+  // Second parameter to bind = partial function application.
+  this.twitter.on('timeline', this.onTweet.bind(this, false));
+  this.twitter.on('reply', this.onTweet.bind(this, true));
+  // Enable random tweets.
+  if (this.config.random_tweet_enable) {
+    setInterval(this.tweetRandom.bind(this), this.config.random_tweet_interval * 60000);
+  }
+  if (callback) {
+    callback();
+  }
 };
 
 /**
