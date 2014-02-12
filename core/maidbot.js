@@ -39,8 +39,8 @@ Maidbot.prototype.connect = function (callback) {
       this.log(chalk.green("Logged in as @" + this.twitter.screen_name + "."));
       this.twitter.on('follow', this.onFollow.bind(this));
       this.twitter.on('unfollow', this.onUnfollow.bind(this));
-      this.twitter.on('timeline', this.onTimeline.bind(this));
-      this.twitter.on('reply', this.onReply.bind(this));
+      this.twitter.on('timeline', this.onTweet.bind(this, false));
+      this.twitter.on('reply', this.onTweet.bind(this, true));
       // Enable random tweets.
       if (this.config.random_tweet_enable) {
         setInterval(this.tweetRandom.bind(this), this.config.random_tweet_interval * 60000);
@@ -98,37 +98,12 @@ Maidbot.prototype.onUnfollow = function (event) {
 };
 
 /**
- * Handle timeline events.
+ * Handle tweet events.
  * @param {Object} event Timeline event.
  */
-Maidbot.prototype.onTimeline = function (event) {
+Maidbot.prototype.onTweet = function (isReply, event) {
   this.log(chalk.grey("@" + event.user.screen_name + " " + event.text));
-  var reply = this.getReplyToTweet('timeline', event);
-  if (reply !== null) {
-    this.log("Replying @" + event.user.screen_name + " " + reply.body);
-    this.twitter.reply(event, reply.body, function (err) {
-      if (err) {
-        console.error(chalk.red(err));
-      }
-    });
-    if (reply.type.indexOf('retweet') > -1 && !event.protected) {
-      console.log("Retweeting @" + event.user.screen_name + ' ' + event.text);
-      this.twitter.retweet(event, function (err) {
-        if (err) {
-          console.error(chalk.red(err));
-        }
-      });
-    }
-  }
-};
-
-/**
- * Handle reply events.
- * @param {Object} event Reply event.
- */
-Maidbot.prototype.onReply = function (event) {
-  this.log(chalk.yellow("@" + event.user.screen_name + " " + event.text));
-  var reply = this.getReplyToTweet('reply', event);
+  var reply = this.getReplyToTweet(isReply ? 'reply' : 'timeline', event);
   if (reply !== null) {
     this.log("Replying @" + event.user.screen_name + " " + reply.body);
     this.twitter.reply(event, reply.body, function (err) {
