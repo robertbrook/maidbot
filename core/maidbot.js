@@ -50,7 +50,6 @@ Maidbot.prototype.connect = function (callback) {
 Maidbot.prototype.onConnect = function (callback) {
   this.log(chalk.green("Logged in as @" + this.twitter.screen_name + "."));
   this.twitter.on('follow', this.onFollow.bind(this));
-  this.twitter.on('unfollow', this.onUnfollow.bind(this));
   // Second parameter to bind = partial function application.
   this.twitter.on('timeline', this.onTweet.bind(this, false));
   this.twitter.on('reply', this.onTweet.bind(this, true));
@@ -86,25 +85,6 @@ Maidbot.prototype.onFollow = function (event) {
     var greeting = this.config.follower_greetings[Math.floor(
       Math.random()*this.config.follower_greetings.length)];
     this.twitter.tweet('@' + event.source.screen_name + ' ' + greeting);
-  }
-};
-
-/**
- * Handle unfollow events.
- * @param {Object} event Unfollow event.
- */
-Maidbot.prototype.onUnfollow = function (event) {
-  this.log(chalk.magenta("Unfollowed by @" + event.source.screen_name + "."));
-  // Unfollow back.
-  if (this.config.auto_follow_back) {
-    this.log("Unfollowing @" + event.source.screen_name + "...");
-    this.twitter.unfollow(event.source.id_str, function (err) {
-      if (err) {
-        console.error(chalk.red(err));
-      } else {
-        this.log(chalk.green("Unfollowed @" + event.source.screen_name + "."));
-      }
-    }.bind(this));
   }
 };
 

@@ -56,16 +56,6 @@ describe('twitter.Twitter', function () {
     t.follow("123456");
   });
 
-  it('calls the api to unfollow users', function (done) {
-    mocktwit.setRequestListener(function (method, path, params) {
-      method.should.equal('POST');
-      path.should.equal('https://api.twitter.com/1.1/friendships/destroy');
-      params.should.eql({"user_id": "123456"});
-      done();
-    });
-    t.unfollow("123456");
-  });
-
   it('prepends @mention to replies', function (done) {
     mocktwit.setRequestListener(function (method, path, params) {
       method.should.equal('POST');
@@ -115,15 +105,6 @@ describe('twitter.Twitter', function () {
           'id_str': '123456'
         }
       });
-      mocktwit.queueMockStreamEvent('unfollow', {
-        'event': 'unfollow',
-        'target': {
-          'id_str': '38895958'
-        },
-        'source': {
-          'id_str': '123456'
-        }
-      });
       mocktwit.queueMockStreamEvent('tweet', {
         'in_reply_to_user_id_str': '38895958',
         'text': '@maid009 hi',
@@ -150,7 +131,7 @@ describe('twitter.Twitter', function () {
     });
 
     // Wait for each event type.
-    var types = ['follow', 'unfollow', 'timeline', 'reply', 'disconnect'];
+    var types = ['follow', 'timeline', 'reply', 'disconnect'];
     var isDone = function () {
       if (types.length === 0) {
         done();
@@ -158,10 +139,6 @@ describe('twitter.Twitter', function () {
     };
     t.on('follow', function () {
       types.splice(types.indexOf('follow'), 1);
-      isDone();
-    });
-    t.on('unfollow', function () {
-      types.splice(types.indexOf('unfollow'), 1);
       isDone();
     });
     t.on('timeline', function () {

@@ -96,34 +96,6 @@ describe('core.maidbot', function () {
       });
     });
 
-    it('unfollows users back when auto_follow_back is enabled', function (done) {
-      config.auto_follow_back = true;
-      var m = new Maidbot(config);
-      mocktwit.setMockResponse({
-        'id_str': '12345678',
-        'screen_name': '@MAID009'
-      });
-      m.connect(function () {
-        mocktwit.setRequestListener(function (method, path, params) {
-          if (method === 'POST') {
-            path.should.equal('https://api.twitter.com/1.1/friendships/destroy');
-            params.should.eql({"user_id": "123456"});
-            done();
-          }
-        });
-        mocktwit.queueMockStreamEvent('unfollow', {
-          'event': 'unfollow',
-          'target': {
-            'id_str': '12345678'
-          },
-          'source': {
-            'id_str': '123456',
-            'screen_name': 'MAID001'
-          }
-        });
-      });
-    });
-
     it('responds to timeline events', function (done) {
       config.tweets.push({
         type: ['timeline'],

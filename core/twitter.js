@@ -62,11 +62,6 @@ Twitter.prototype.connect = function (callback) {
         self.emit('follow', event);
       }
     });
-    self.stream.on('unfollow', function (event) {
-      if (event.target.id_str === self.id && event.source.id_str !== self.id) {
-        self.emit('unfollow', event);
-      }
-    });
     self.stream.on('tweet', function (tweet) {
       // Ignore own tweets and retweets.
       if (tweet.user.id_str !== self.id && !tweet.retweeted_status) {
@@ -137,15 +132,6 @@ Twitter.prototype.retweet = function (tweet, callback) {
  */
 Twitter.prototype.follow = function (user_id, callback) {
   this.twit.post('friendships/create', {user_id: user_id}, callback);
-};
-
-/**
- * Unfollows a user.
- * @param {String} user_id User ID.
- * @param {Function} callback Callback function.
- */
-Twitter.prototype.unfollow = function (user_id, callback) {
-  this.twit.post('friendships/destroy', {user_id: user_id}, callback);
 };
 
 // Module exports.
